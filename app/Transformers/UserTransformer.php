@@ -17,7 +17,8 @@ class UserTransformer extends BaseTransformer
     {
         return [
             'name' => $user->name,
-            'mobile' => $user->mobile
+            'mobile' => hide_star($user->mobile),
+            'email' => hide_star($user->email),
         ];
     }
 }

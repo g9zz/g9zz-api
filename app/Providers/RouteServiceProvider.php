@@ -41,6 +41,7 @@ class RouteServiceProvider extends ServiceProvider
 
         //
         $this->mapTestRoutes();
+        $this->mapConsoleRoutes();
     }
 
     /**
@@ -77,5 +78,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('test')
             ->namespace($this->namespace)
             ->group(base_path('routes/test.php'));
+    }
+
+    public function mapConsoleRoutes()
+    {
+        Route::prefix('console')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/console.php'));
     }
 }
