@@ -26,7 +26,7 @@ if (!function_exists('parse_input')) {
  */
 if (!function_exists('per_page')) {
     function per_page($default = 20) {
-        $limit = \Request::get('limit');
+        $limit = \FormRequest::get('limit');
         $limit = isset($limit) ? $limit : 20;
         return $default < $limit ? $default : $limit;
     }
