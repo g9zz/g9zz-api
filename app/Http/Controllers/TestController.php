@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreCommentRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Transformers\UserTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -35,5 +36,10 @@ class TestController extends Controller
         $this->setData($result);
         return $this->response();
 //        dd($resource);
+    }
+
+    public function validator(StoreCommentRequest $request)
+    {
+        dd($request->all(),11223);
     }
 }

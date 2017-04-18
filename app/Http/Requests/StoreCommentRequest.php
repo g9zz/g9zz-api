@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class StoreCommentRequest extends FormRequest
+class StoreCommentRequest extends CommonRequest
 {
+    public $key = 'test';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +12,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +23,8 @@ class StoreCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'test1' => 'required',
+            'test2' => 'required'
         ];
     }
 }

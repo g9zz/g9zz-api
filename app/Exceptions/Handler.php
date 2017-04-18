@@ -48,7 +48,8 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidatorException) {
             $code = $exception->getCode();
             if ($code == 0) $code = 400000000;
-            return  redirect()->back();
+            $content = config('validation.message.'.$code);
+            return \Response::json(['message' => $content,'code' => $code],200);
         }
 
 
