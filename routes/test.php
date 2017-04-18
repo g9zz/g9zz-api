@@ -7,3 +7,4 @@
  */
 
 Route::get('test','TestController@index');
+Route::get('validator','TestController@validator');
