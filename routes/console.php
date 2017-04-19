@@ -16,3 +16,13 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+//Route::resource('user','Console\UserController');
+Route::group(['prefix' => 'user'],function(){
+    Route::get('/','Console\UserController@index')->name('console.user.index');
+});
+
+Route::group(['prefix' => 'post'],function() {
+    Route::get('/','Console\PostController@index')->name('console.post.index');
+
+});

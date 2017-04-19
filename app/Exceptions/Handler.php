@@ -20,6 +20,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
+        ValidatorException::class,
     ];
 
     /**
@@ -44,6 +45,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ValidatorException) {
+            $code = $exception->getCode();
+            if ($code == 0) $code = 400000000;
+            $content = config('validation.message.'.$code);
+            return \Response::json(['message' => $content,'code' => $code,'data' => \stdClass::class],200);
+        }
+
+
         return parent::render($request, $exception);
     }
 

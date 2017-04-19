@@ -40,6 +40,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         //
+        $this->mapTestRoutes();
+        $this->mapConsoleRoutes();
     }
 
     /**
@@ -69,5 +71,19 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    public function mapTestRoutes()
+    {
+        Route::prefix('test')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/test.php'));
+    }
+
+    public function mapConsoleRoutes()
+    {
+        Route::prefix('console')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/console.php'));
     }
 }
