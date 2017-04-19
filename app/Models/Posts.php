@@ -54,6 +54,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Posts whereViewCount($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Posts whereVoteCount($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\User $author
+ * @property-read \App\Models\Nodes $category
+ * @property-read \App\Models\User $last_reply_user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Appends[] $postscript
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Replies[] $reply
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tags[] $tag
  */
 class Posts extends Model
 {
@@ -75,4 +81,30 @@ class Posts extends Model
         'excerpt',
         'is_tagged',
     ];
+
+    public function tag()
+    {
+        return $this->hasMany(Tags::class);
+    }
+    public function category()
+    {
+        return $this->hasOne(Nodes::class,'id','node_id');
+    }
+    public function author()
+    {
+        return $this->hasOne(User::class,'id','user_id');
+    }
+    public function last_reply_user()
+    {
+        return $this->hasOne(User::class,'id','last_reply_user_id');
+    }
+    public function reply()
+    {
+        return $this->hasMany(Replies::class,'post_id','id');
+    }
+    public function postscript()
+    {
+        return $this->hasMany(Appends::class,'topic_id','id');
+    }
+
 }

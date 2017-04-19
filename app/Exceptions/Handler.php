@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
             $code = $exception->getCode();
             if ($code == 0) $code = 400000000;
             $content = config('validation.message.'.$code);
-            return \Response::json(['message' => $content,'code' => $code],200);
+            return \Response::json(['message' => $content,'code' => $code,'data' => \stdClass::class],200);
         }
 
 

@@ -2,19 +2,39 @@
 
 namespace App\Http\Controllers\Console;
 
+use App\Services\Console\PostService;
+use App\Transformers\PostTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
 
 class PostController extends Controller
 {
+    protected $postService;
+
+    protected $request;
+
+    public function __construct(PostService $postService,Request $request)
+    {
+        $this->postService = $postService;
+        $this->request = $request;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function index()
     {
-        //
+        $request = $this->request->all();
+        $this->log('"controller.request" to listener "' . __METHOD__ . '".',['request' => $request]);
+        $paginate = $this->postService->paginate($request);
+        $resource = new Collection($paginate,new PostTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($paginate));
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

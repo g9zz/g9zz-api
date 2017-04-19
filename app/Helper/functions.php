@@ -21,6 +21,14 @@ if (!function_exists('parse_input')) {
     }
 }
 
+if (!function_exists('string_parse_input')) {
+    function string_parse_input($string)
+    {
+        return strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', $string));
+    }
+}
+
+
 /**
  * 默认分页数
  */

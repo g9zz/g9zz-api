@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('password')->nullable();
             $table->integer('github_id')->unique()->nullable()->index();
-            $table->integer('mobile')->unique()->nullable()->index();
+            $table->string('mobile')->unique()->nullable()->index();
             $table->string('github_url')->nullable();
             $table->string('email')->nullable()->index();
             $table->string('name')->nullable()->index();

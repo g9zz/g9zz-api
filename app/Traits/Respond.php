@@ -17,15 +17,22 @@ use Psy\Util\Json;
 
 trait Respond
 {
-    public $code = 200;
+    public $code = 0;
 
     public $data;
 
     public $status = 200;
 
+    public $message = '成功';
+
     public function setCode($code)
     {
-        $this->code = $code;
+       return $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
     }
 
     public function setData($data)
@@ -48,6 +55,16 @@ trait Respond
         return $this->status;
     }
 
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    public function setMessage($message)
+    {
+        return $this->message = $message;
+    }
+
     public function response()
     {
         $status = $this->getStatus();
@@ -55,6 +72,8 @@ trait Respond
         $fractal = app()->make('League\Fractal\Manager');
 //        dd($fractal->createData($data)->toArray());
         $response = new \stdClass();
+        $response->code = $this->getCode();
+        $response->message = $this->getMessage();
         $response->data = new \stdClass();
         if ($data instanceof Collection) {
             $paginator = $data->getPaginator();
@@ -72,6 +91,7 @@ trait Respond
             $arr = $fractal->createData($data)->toArray();
             if (count($arr['data']) >1 ) $response->data->items = $arr['data'];
             $response->data = $arr['data'];
+
         }
 
         if ($data instanceof Item) {

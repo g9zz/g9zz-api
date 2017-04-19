@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Console;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class NodeController extends Controller
 {
     /**
      * Display a listing of the resource.
