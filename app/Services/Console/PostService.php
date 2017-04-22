@@ -21,6 +21,11 @@ class PostService
         $this->postRepository = $postRepository;
     }
 
+    /**
+     * 分页
+     * @param $request
+     * @return mixed
+     */
     public function paginate($request)
     {
         if (empty($request)) {
@@ -82,6 +87,11 @@ class PostService
 
     }
 
+    /**
+     * 查找帖子
+     * @param $id
+     * @return mixed
+     */
     public function find($id)
     {
         return $this->postRepository
@@ -90,6 +100,11 @@ class PostService
             ->with(['reply'])
             ->with(['postscript'])
             ->find($id);
+    }
+
+    public function delete($id)
+    {
+        return $this->postRepository->delete($id);
     }
 
 }

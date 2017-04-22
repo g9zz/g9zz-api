@@ -11,6 +11,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Posts
@@ -64,6 +65,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Posts extends Model
 {
+    use SoftDeletes;
+
+
     protected $table = 'posts';
     protected $fillable = [
         'title',

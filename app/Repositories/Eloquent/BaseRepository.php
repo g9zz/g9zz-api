@@ -22,4 +22,11 @@ abstract class BaseRepository extends Repository
              return parent::find($id,$columns);
          }
     }
+
+    public function delete($id)
+    {
+        $this->find($id);
+        return parent::delete($id);
+    }
+
 }

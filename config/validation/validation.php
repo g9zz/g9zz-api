@@ -12,8 +12,8 @@ return [
         'some.error' => 400000000,
         'data.null' => 400000001,
     ],
-    'test' => [
-      'test1.required' =>  401000000,
-      'test2.required' =>  402000000,
+    'post' => [
+      'title.required' =>  401000000,
     ],
+
 ];
