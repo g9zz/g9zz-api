@@ -95,7 +95,7 @@ trait Respond
         }
 
         if ($data instanceof Item) {
-            $arr = $fractal->createData($data);
+            $arr = $fractal->createData($data)->toArray();
             $response->data = $arr['data'];
         }
         return \Response::json($response, $status);

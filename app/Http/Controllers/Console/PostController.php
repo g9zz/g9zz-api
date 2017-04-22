@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class PostController extends Controller
 {
@@ -62,11 +63,14 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function show($id)
     {
-        //
+        $data = $this->postService->find($id);
+        $resource = new Item($data,new PostTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

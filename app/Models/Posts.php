@@ -60,6 +60,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Appends[] $postscript
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Replies[] $reply
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tags[] $tag
+ * @property-read \App\Models\Nodes $node
  */
 class Posts extends Model
 {
@@ -84,11 +85,12 @@ class Posts extends Model
 
     public function tag()
     {
-        return $this->hasMany(Tags::class);
+        return $this->belongsToMany(Tags::class,'post_tag','post_id','tag_id');
     }
-    public function category()
+
+    public function node()
     {
-        return $this->hasOne(Nodes::class,'id','node_id');
+        return $this->belongsToMany(Nodes::class,'post_node','post_id','node_id');
     }
     public function author()
     {

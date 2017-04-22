@@ -82,4 +82,14 @@ class PostService
 
     }
 
+    public function find($id)
+    {
+        return $this->postRepository
+            ->with(['tag'])
+            ->with(['node'])
+            ->with(['reply'])
+            ->with(['postscript'])
+            ->find($id);
+    }
+
 }

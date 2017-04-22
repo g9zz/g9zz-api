@@ -21,6 +21,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
         ValidatorException::class,
+        DataNullException::class,
     ];
 
     /**
@@ -41,7 +42,7 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function render($request, Exception $exception)
     {
@@ -49,9 +50,15 @@ class Handler extends ExceptionHandler
             $code = $exception->getCode();
             if ($code == 0) $code = 400000000;
             $content = config('validation.message.'.$code);
-            return \Response::json(['message' => $content,'code' => $code,'data' => \stdClass::class],200);
+            return \Response::json(['message' => $content,'code' => $code,'data' => (object)null],200);
         }
 
+        if ($exception instanceof DataNullException) {
+            $code = $exception->getCode();
+            if ($code == 0) $code = 400000001;
+            $content = config('validation.message.'.$code);
+            return \Response::json(['message' => $content,'code' => $code,'data' => (object)null],200);
+        }
 
         return parent::render($request, $exception);
     }

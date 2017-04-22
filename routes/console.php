@@ -24,5 +24,6 @@ Route::group(['prefix' => 'user'],function(){
 
 Route::group(['prefix' => 'post'],function() {
     Route::get('/','Console\PostController@index')->name('console.post.index');
+    Route::get('/{id}','Console\PostController@show')->name('console.post.show');
 
 });
