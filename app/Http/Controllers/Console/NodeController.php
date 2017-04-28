@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Console;
 
+use App\Http\Requests\Console\NodeStoreRequest;
 use App\Services\Console\NodeService;
 use App\Transformers\NodeTransformer;
 use Illuminate\Http\Request;
@@ -49,9 +50,10 @@ class NodeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NodeStoreRequest $request)
     {
-        //
+        $result =  $this->nodeService->storeNode($request);
+
     }
 
     /**

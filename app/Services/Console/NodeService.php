@@ -60,4 +60,17 @@ class NodeService
         return $data;
     }
 
+    public function storeNode($request)
+    {
+        $create = [
+            'parent_id' => $request->get('parent_id'),
+            'weight' => $request->get('weight'),
+            'name' => $request->get('name'),
+            'slug' => $request->get('slug'),
+            'description' => $request->get('description'),
+        ];
+
+        dd($create);
+
+    }
 }

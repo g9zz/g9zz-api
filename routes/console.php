@@ -31,6 +31,7 @@ Route::group(['prefix' => 'post'],function() {
 
 Route::group(['prefix' => 'node'],function() {
     Route::get('/','Console\NodeController@index')->name('console.node.index');
+    Route::post('/','Console\NodeController@store')->name('console.node.store');
     Route::get('/{id}','Console\NodeController@show')->name('console.node.show');
     Route::put('/{id}','Console\NodeController@update')->name('console.node.put');
     Route::delete('/{id}','Console\NodeController@destroy')->name('console.node.destroy');
