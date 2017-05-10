@@ -12,5 +12,9 @@ namespace App\Repositories\Contracts;
 
 interface NodeRepositoryInterface extends BaseRepositoryInterface
 {
-
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getChildById($id);
 }

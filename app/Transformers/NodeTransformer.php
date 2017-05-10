@@ -17,6 +17,7 @@ class NodeTransformer extends BaseTransformer
     public function transform(Nodes $nodes)
     {
         $return = [
+            'id' => $nodes->id,
             'postCount' => $nodes->post_count,
             'weight' => $nodes->weight,
             'level' => $nodes->level,

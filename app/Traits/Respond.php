@@ -101,7 +101,7 @@ trait Respond
             return \Response::json($response, $status);
         }
         $response->data = $data;
-//        dd($response->code);
+//        dd($response->code,$response);
         if ($response->code != 200) throw new CodeException($response->code);
 
         return \Response::json($response, $status);

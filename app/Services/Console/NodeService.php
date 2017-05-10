@@ -63,6 +63,10 @@ class NodeService
         return $data;
     }
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function storeNode($request)
     {
         $create = [
@@ -128,6 +132,23 @@ class NodeService
         $update['level'] = $this->checkLevel($update['parent_id']);
         return $this->nodeRepository->update($update,$id);
     }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete($id)
+    {
+        $this->nodeRepository->find($id);
+        $isHasChild =  $this->nodeRepository->getChildById($id);//return obj | bool
+        if (!empty($isHasChild)) {
+            $this->setCode(config('validation.validation.node')['has.child_node']);
+            return $this->response();
+        }
+//        dd(2343);
+        return  $this->nodeRepository->delete($id);
+    }
+
 
     /**
      * @param $parentId

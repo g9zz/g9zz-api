@@ -19,4 +19,13 @@ class NodeRepository extends BaseRepository implements NodeRepositoryInterface
     {
         return Nodes::class;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getChildById($id)
+    {
+        return $this->model->where('parent_id',$id)->first();
+    }
 }

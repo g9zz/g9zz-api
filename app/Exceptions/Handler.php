@@ -63,7 +63,6 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof codeException) {
             $code = $exception->getCode();
-            if ($code == 0) $code = 400000001;
             $content = config('validation.message.'.$code);
             return \Response::json(['message' => $content,'code' => $code,'data' => (object)null],200);
         }
