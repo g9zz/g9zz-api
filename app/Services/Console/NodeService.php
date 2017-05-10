@@ -89,6 +89,12 @@ class NodeService
 
     }
 
+    /**
+     * 通过父类ID生成等级level
+     * @param $parentId
+     * @param int $level
+     * @return int
+     */
     public function getLevelByParentId($parentId,$level = 0)
     {
         if ($parentId == 0) {
@@ -100,5 +106,10 @@ class NodeService
             }
         }
         return $level + 1;
+    }
+
+    public function find($id)
+    {
+        return $this->nodeRepository->find($id);
     }
 }

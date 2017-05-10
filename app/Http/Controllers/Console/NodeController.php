@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Console;
 
-use App\Http\Requests\Console\NodeStoreRequest;
+use App\Http\Requests\Console\NodeRequest;
 use App\Services\Console\NodeService;
 use App\Transformers\NodeTransformer;
 use Illuminate\Http\Request;
@@ -45,26 +45,27 @@ class NodeController extends Controller
     }
 
     /**
-     * @param NodeStoreRequest $request
+     * @param NodeRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(NodeStoreRequest $request)
+    public function store(NodeRequest $request)
     {
-        $result =  $this->nodeService->storeNode($request);
+        $result = $this->nodeService->storeNode($request);
         $resource = new Item($result,new NodeTransformer());
         $this->setData($resource);
         return $this->response();
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $node = $this->nodeService->find($id);
+        $resource = new Item($node,new NodeTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
@@ -85,9 +86,10 @@ class NodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(NodeRequest $request, $id)
     {
         //
+        dd(4444);
     }
 
     /**
