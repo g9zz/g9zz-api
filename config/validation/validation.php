@@ -10,9 +10,22 @@
 return [
     'default' => [
         'some.error' => 400000000,
+        'data.null' => 400000001,
     ],
-    'test' => [
-      'test1.required' =>  401000000,
-      'test2.required' =>  402000000,
+    'post' => [
+      'title.required' =>  401000000,
     ],
+    'node' => [
+        'parentId.required' => 402000000,
+        'weight.required' => 402000001,
+        'name.required' => 402000002,
+        'slug.required' => 402000003,
+        'name.unique' => 402000004,
+        'slug.unique' => 402000005,
+        'slug.regex' => 402000006,
+        'slug.max' => 402000007,
+        'node.max_level' => 402000008,
+        'error.relation' => 402000009,
+        'has.child_node' => 402000010,
+    ]
 ];

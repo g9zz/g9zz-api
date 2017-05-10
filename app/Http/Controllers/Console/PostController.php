@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Console;
 
+use App\Http\Requests\PostEditRequest;
 use App\Services\Console\PostService;
 use App\Transformers\PostTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class PostController extends Controller
 {
@@ -62,11 +64,14 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function show($id)
     {
-        //
+        $data = $this->postService->find($id);
+        $resource = new Item($data,new PostTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
@@ -87,19 +92,24 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostEditRequest $request, $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function destroy($id)
     {
-        //
+        $result = $this->postService->delete($id);
+        $this->setData((object)null);
+        if (!$result) {
+            $this->setCode(400000000);
+        }
+        return $this->response();
     }
 }

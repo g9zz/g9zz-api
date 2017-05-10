@@ -9,9 +9,24 @@
 namespace App\Repositories\Eloquent;
 
 
+use App\Exceptions\DataNullException;
 use Bosnadev\Repositories\Eloquent\Repository;
 
 abstract class BaseRepository extends Repository
 {
+    public function find($id, $columns = array('*'))
+    {
+         if (empty(parent::find($id, $columns)) ){
+             throw new DataNullException();
+         } else {
+             return parent::find($id,$columns);
+         }
+    }
+
+    public function delete($id)
+    {
+        $this->find($id);
+        return parent::delete($id);
+    }
 
 }

@@ -48,7 +48,50 @@ class PostTransformer extends BaseTransformer
                 'avatar' => $posts->last_reply_user->avatar,
             ];
         }
+        if ($posts->tag) {
+            foreach ($posts->tag as $item) {
+                $return['tag'][] = [
+                    'name' => $item->name,
+                    'displayName' => $item->display_name,
+                    'description' => $item->description,
+//                    'post_count' => $item->post_count,
+                    'weight' => $item->weight,
+                ];
+            }
+        }
 
+        if ($posts->node) {
+            foreach ($posts->node as $value) {
+                $return['node'][] = [
+                    'name' => $value->name,
+                    'slug' => $value->slug,
+                    'description' => $value->description,
+                ];
+            }
+        }
+
+        if ($posts->reply) {
+            foreach ($posts->reply as $item) {
+                $return['reply'] = [
+                    'source' => $item->source,
+                    'isBlocked' => $item->is_blocked,
+                    'voteCount' => $item->vote_count,
+                    'body' => $item->body,
+                    'bodyOriginal' => $item->body_original,
+                    'createdAt' => $item->created_at,
+                ];
+            }
+        }
+
+        if ($posts->postscript) {
+            foreach ($posts->postscript as $item) {
+                $return['reply'] = [
+                    'content' => $item->content,
+                    'contentOriginal' => $item->content_original,
+                    'createdAt' => $item->created_at,
+                ];
+            }
+        }
 
         return $return;
     }

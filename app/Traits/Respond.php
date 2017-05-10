@@ -10,10 +10,10 @@
 namespace App\Traits;
 
 
+use App\Exceptions\CodeException;
 use Dotenv\Exception\ValidationException;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use Psy\Util\Json;
 
 trait Respond
 {
@@ -27,7 +27,8 @@ trait Respond
 
     public function setCode($code)
     {
-       return $this->code = $code;
+        $this->code = $code;
+        $this->message = config('validation.message.'.$code);
     }
 
     public function getCode()
@@ -91,13 +92,18 @@ trait Respond
             $arr = $fractal->createData($data)->toArray();
             if (count($arr['data']) >1 ) $response->data->items = $arr['data'];
             $response->data = $arr['data'];
-
+            return \Response::json($response, $status);
         }
 
         if ($data instanceof Item) {
-            $arr = $fractal->createData($data);
+            $arr = $fractal->createData($data)->toArray();
             $response->data = $arr['data'];
+            return \Response::json($response, $status);
         }
+        $response->data = $data;
+//        dd($response->code,$response);
+        if ($response->code != 200) throw new CodeException($response->code);
+
         return \Response::json($response, $status);
     }
 

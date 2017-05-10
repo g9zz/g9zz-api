@@ -21,6 +21,9 @@ if (!function_exists('parse_input')) {
     }
 }
 
+/**
+ * 单条驼峰字符串转换成下划线
+ */
 if (!function_exists('string_parse_input')) {
     function string_parse_input($string)
     {

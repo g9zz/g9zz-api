@@ -12,7 +12,7 @@ namespace App\Traits;
 
 
 use Faker\Provider\Uuid;
-use Illuminate\Http\Request;
+use Request;
 
 trait G9zzLog
 {
@@ -24,11 +24,15 @@ trait G9zzLog
 
     public function log($message, $context = array())
     {
-        $client = $this->request->offsetGet('client');
-        if (! isset($client['requestId'])) {
-            $client['requestId'] = Uuid::uuid();
+        //TODO:修改request
+        if ($this->request) {
+            $client = $this->request->offsetGet('client');
+            if (! isset($client['requestId'])) {
+                $client['requestId'] = Uuid::uuid();
+            }
+            $context = array($context, $client);
         }
-        $context = array($context, $client);
+
         return \Log::info($message, $context);
     }
 }

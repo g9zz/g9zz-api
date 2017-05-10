@@ -24,5 +24,15 @@ Route::group(['prefix' => 'user'],function(){
 
 Route::group(['prefix' => 'post'],function() {
     Route::get('/','Console\PostController@index')->name('console.post.index');
+    Route::get('/{id}','Console\PostController@show')->name('console.post.show');
+    Route::put('/{id}','Console\PostController@update')->name('console.post.put');
+    Route::delete('/{id}','Console\PostController@destroy')->name('console.post.destroy');
+});
 
+Route::group(['prefix' => 'node'],function() {
+    Route::get('/','Console\NodeController@index')->name('console.node.index');
+    Route::post('/','Console\NodeController@store')->name('console.node.store');
+    Route::get('/{id}','Console\NodeController@show')->name('console.node.show');
+    Route::put('/{id}','Console\NodeController@update')->name('console.node.put');
+    Route::delete('/{id}','Console\NodeController@destroy')->name('console.node.destroy');
 });
