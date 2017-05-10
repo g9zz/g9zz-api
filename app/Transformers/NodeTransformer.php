@@ -24,8 +24,13 @@ class NodeTransformer extends BaseTransformer
             'name' => $nodes->name,
             'slug' => $nodes->slug,
             'description' => $nodes->description,
-            'newHtml' => $nodes->newHtml,
         ];
+
+        if ($nodes->newHtml) {
+            $return['html'] = ['newHtml' => $nodes->newHtml];
+        }
+
+
         return $return;
     }
 }

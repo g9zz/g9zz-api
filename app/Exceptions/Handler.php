@@ -22,6 +22,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Validation\ValidationException::class,
         ValidatorException::class,
         DataNullException::class,
+        CodeException::class,
     ];
 
     /**
@@ -59,6 +60,14 @@ class Handler extends ExceptionHandler
             $content = config('validation.message.'.$code);
             return \Response::json(['message' => $content,'code' => $code,'data' => (object)null],200);
         }
+
+        if ($exception instanceof codeException) {
+            $code = $exception->getCode();
+            if ($code == 0) $code = 400000001;
+            $content = config('validation.message.'.$code);
+            return \Response::json(['message' => $content,'code' => $code,'data' => (object)null],200);
+        }
+
 
         return parent::render($request, $exception);
     }

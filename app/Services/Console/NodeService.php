@@ -11,9 +11,12 @@ namespace App\Services\Console;
 
 
 use App\Repositories\Contracts\NodeRepositoryInterface;
+use App\Traits\G9zzLog;
+use App\Traits\Respond;
 
 class NodeService
 {
+    use G9zzLog,Respond;
     protected $nodeRepository;
 
     public function __construct(NodeRepositoryInterface $nodeRepository)
@@ -63,14 +66,39 @@ class NodeService
     public function storeNode($request)
     {
         $create = [
-            'parent_id' => $request->get('parent_id'),
+            'parent_id' => $request->get('parentId'),
             'weight' => $request->get('weight'),
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'description' => $request->get('description'),
+            'is_show' => $request->get('isShow') == 'no' ? 'no' :'yes',
         ];
+        $this->log('service.request to '.__METHOD__,['create' => $create]);
+        $level = $this->getLevelByParentId($create['parent_id']);
+        $nodeMaxLevel = config('g9zz.node.max_level');
+        //建议level不要设置那么大,如果要修改,请到config/g9zz.php 下进行修改
+        if ($level > $nodeMaxLevel) {
+            $this->setCode(config('validation.validation.node')['node.max_level']);
+            return $this->response();
+        }
 
-        dd($create);
+        $create['level'] = $level;
+        $create['post_count'] = 0;
 
+        return $this->nodeRepository->create($create);
+
+    }
+
+    public function getLevelByParentId($parentId,$level = 0)
+    {
+        if ($parentId == 0) {
+            return $level;
+        } else {
+            $nodeData =  $this->nodeRepository->find($parentId);//返回对象
+            if ($nodeData->parent_id != 0) {
+                return $this->getLevelByParentId($nodeData->parent_id,$level+1);
+            }
+        }
+        return $level + 1;
     }
 }

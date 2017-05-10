@@ -24,6 +24,6 @@ return [
         'slug.unique' => 402000005,
         'slug.regex' => 402000006,
         'slug.max' => 402000007,
-
+        'node.max_level' => 402000008,
     ]
 ];

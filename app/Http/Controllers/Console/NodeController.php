@@ -45,15 +45,15 @@ class NodeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param NodeStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(NodeStoreRequest $request)
     {
         $result =  $this->nodeService->storeNode($request);
-
+        $resource = new Item($result,new NodeTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
