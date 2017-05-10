@@ -84,12 +84,15 @@ class NodeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function update(NodeRequest $request, $id)
     {
-        //
-        dd(4444);
+        $this->nodeService->update($request,$id);
+
+        $resource = new Item($this->nodeService->find($id),new NodeTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

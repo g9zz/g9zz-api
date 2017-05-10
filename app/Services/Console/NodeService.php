@@ -74,15 +74,7 @@ class NodeService
             'is_show' => $request->get('isShow') == 'no' ? 'no' :'yes',
         ];
         $this->log('service.request to '.__METHOD__,['create' => $create]);
-        $level = $this->getLevelByParentId($create['parent_id']);
-        $nodeMaxLevel = config('g9zz.node.max_level');
-        //建议level不要设置那么大,如果要修改,请到config/g9zz.php 下进行修改
-        if ($level > $nodeMaxLevel) {
-            $this->setCode(config('validation.validation.node')['node.max_level']);
-            return $this->response();
-        }
-
-        $create['level'] = $level;
+        $create['level'] = $this->checkLevel($create['parent_id']);
         $create['post_count'] = 0;
 
         return $this->nodeRepository->create($create);
@@ -93,23 +85,64 @@ class NodeService
      * 通过父类ID生成等级level
      * @param $parentId
      * @param int $level
-     * @return int
+     * @param array $ids
+     * @return mixed
      */
-    public function getLevelByParentId($parentId,$level = 0)
+    public function getLevelByParentId($parentId,$level = 0,$ids= [])
     {
         if ($parentId == 0) {
             return $level;
         } else {
             $nodeData =  $this->nodeRepository->find($parentId);//返回对象
             if ($nodeData->parent_id != 0) {
-                return $this->getLevelByParentId($nodeData->parent_id,$level+1);
+                if (in_array($nodeData->parent_id,$ids)) {
+                    $this->setCode(config('validation.validation.node')['error.relation']);
+                    return $this->response();
+                }
+                $ids[] = $nodeData->parent_id;
+                return $this->getLevelByParentId($nodeData->parent_id,$level+1,$ids);
             }
         }
         return $level + 1;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function find($id)
     {
         return $this->nodeRepository->find($id);
     }
+
+    /**
+     * @param $request
+     * @param $id
+     * @return mixed
+     */
+    public function update($request,$id)
+    {
+        $update = parse_input($request->only(['parentId','weight','name','slug','description','isShow']));
+        if (!$update['is_show']) unset($update['is_show']);
+        $this->log('service.request to '.__METHOD__,['create' => $update]);
+        $update['level'] = $this->checkLevel($update['parent_id']);
+        return $this->nodeRepository->update($update,$id);
+    }
+
+    /**
+     * @param $parentId
+     * @return \Illuminate\Http\JsonResponse|int
+     */
+    public function checkLevel($parentId)
+    {
+        $level = $this->getLevelByParentId($parentId);
+        $nodeMaxLevel = config('g9zz.node.max_level');
+        //建议level不要设置那么大,如果要修改,请到config/g9zz.php 下进行修改
+        if ($level > $nodeMaxLevel) {
+            $this->setCode(config('validation.validation.node')['node.max_level']);
+            return $this->response();
+        }
+        return $level;
+    }
+
 }
