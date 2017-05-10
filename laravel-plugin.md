@@ -8,4 +8,6 @@
   - Github:https://github.com/bosnadev/repository
   - 中文:http://laravelacademy.org/post/3063.html
   
-  
+- 分词
+  - Github:https://github.com/fukuball/jieba-php
+  - 中文: ''
