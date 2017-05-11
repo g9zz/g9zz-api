@@ -36,3 +36,11 @@ Route::group(['prefix' => 'node'],function() {
     Route::put('/{id}','Console\NodeController@update')->name('console.node.put');
     Route::delete('/{id}','Console\NodeController@destroy')->name('console.node.destroy');
 });
+
+Route::group(['prefix' => 'tag'],function() {
+    Route::get('/','Console\TagController@index')->name('console.tag.index');
+    Route::post('/','Console\TagController@store')->name('console.tag.store');
+    Route::get('/{id}','Console\TagController@show')->name('console.tag.show');
+    Route::put('/{id}','Console\TagController@update')->name('console.tag.put');
+    Route::delete('/{id}','Console\TagController@destroy')->name('console.tag.destroy');
+});
