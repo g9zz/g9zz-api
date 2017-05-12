@@ -31,10 +31,10 @@ return [
     'tag' => [
         'name.required' => 403000000,
         'name.unique' => 403000001,
-        'display_name.required' => 403000002,
-        'display_name.unique' => 403000003,
-        'display_name.max' => 403000004,
-        'display_name.regex' => 403000005,
+        'displayName.required' => 403000002,
+        'displayName.unique' => 403000003,
+        'displayName.max' => 403000004,
+        'displayName.regex' => 403000005,
         'weight.required' => 403000006,
         'description.max' => 403000007,
     ]

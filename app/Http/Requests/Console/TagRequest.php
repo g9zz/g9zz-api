@@ -26,7 +26,7 @@ class TagRequest extends CommonRequest
                 'description' => 'max:120',
                 'weight' => 'required',
                 'name' => 'required|unique:tags,name',
-                'display_name' => 'required|max:60|unique:tags|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:tags,display_name|regex:/^[a-zA-Z0-9]+$/',
             ];
         }
 
@@ -37,7 +37,7 @@ class TagRequest extends CommonRequest
                 'description' => 'max:120',
                 'weight' => 'required',
                 'name' => 'required|unique:tags,name,null,null,id,!'.$id,
-                'display_name' => 'required|max:60|unique:tags,slug,null,null,id,!'.$id.'|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:tags,display_name,null,null,id,!'.$id.'|regex:/^[a-zA-Z0-9]+$/',
             ];
         }
 

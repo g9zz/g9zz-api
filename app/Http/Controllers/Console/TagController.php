@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class TagController extends Controller
 {
@@ -36,58 +37,49 @@ class TagController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param TagRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(TagRequest $request)
     {
-        //
+        $result = $this->tagService->store($request);
+        $resource = new Item($result,new TagTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $result = $this->tagService->find($id);
+        $resource = new Item($result,new TagTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param TagRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id)
+    public function update(TagRequest $request, $id)
     {
-        //
+        $this->tagService->update($request,$id);
+        $resource = new Item($this->tagService->find($id),new TagTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $result = $this->tagService->delete($id);
+        if ($result) return $this->response();
     }
 }
