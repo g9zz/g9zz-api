@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Console;
 
 use App\Http\Requests\Console\PostRequest;
-use App\Http\Requests\PostEditRequest;
 use App\Services\Console\PostService;
 use App\Transformers\PostTransformer;
 use Illuminate\Http\Request;

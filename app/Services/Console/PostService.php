@@ -126,6 +126,7 @@ class PostService
         ];
         if (!empty($request->get('isTop'))) $create['is_top'] = $request->get('isTop')== 'yes' ? 'yes' :'no';
 
+        $create['user_id'] = rand(1,10);//TODO::需要修改
         $parser = new Parser();
         $create['content'] = $parser->makeHtml($create['body_original']);
         $this->log('service.request to '.__METHOD__,['create' => $create]);
