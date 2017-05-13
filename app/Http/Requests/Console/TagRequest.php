@@ -36,8 +36,8 @@ class TagRequest extends CommonRequest
             $rule =  [
                 'description' => 'max:120',
                 'weight' => 'required',
-                'name' => 'required|unique:tags,name,null,null,id,!'.$id,
-                'displayName' => 'required|max:60|unique:tags,display_name,null,null,id,!'.$id.'|regex:/^[a-zA-Z0-9]+$/',
+                'name' => 'required|unique:tags,name,!'.$id.',id',
+                'displayName' => 'required|max:60|unique:tags,display_name,!'.$id.',id|regex:/^[a-zA-Z0-9]+$/',
             ];
         }
 
