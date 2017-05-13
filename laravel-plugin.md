@@ -11,3 +11,9 @@
 - 分词
   - Github:https://github.com/fukuball/jieba-php
   - 中文: ''
+  
+- php markdown解析
+  - Github:https://github.com/SegmentFault/HyperDown
+  - package:composer require joyqi/hyper-down dev-master
+  
+  

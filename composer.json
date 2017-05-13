@@ -9,6 +9,7 @@
         "barryvdh/laravel-ide-helper": "^2.3",
         "bosnadev/repositories": " 0.*",
         "doctrine/dbal": "^2.5",
+        "joyqi/hyper-down": "dev-master",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "league/fractal": "^0.16.0"

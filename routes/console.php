@@ -24,6 +24,7 @@ Route::group(['prefix' => 'user'],function(){
 
 Route::group(['prefix' => 'post'],function() {
     Route::get('/','Console\PostController@index')->name('console.post.index');
+    Route::post('/','Console\PostController@store')->name('console.post.store');
     Route::get('/{id}','Console\PostController@show')->name('console.post.show');
     Route::put('/{id}','Console\PostController@update')->name('console.post.put');
     Route::delete('/{id}','Console\PostController@destroy')->name('console.post.destroy');

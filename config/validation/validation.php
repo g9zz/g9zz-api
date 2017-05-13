@@ -13,7 +13,9 @@ return [
         'data.null' => 400000001,
     ],
     'post' => [
-      'title.required' =>  401000000,
+        'title.required' =>  401000000,
+        'title.max' => 401000001,
+        'content.required' => 401000002,
     ],
     'node' => [
         'parentId.required' => 402000000,
@@ -37,5 +39,5 @@ return [
         'displayName.regex' => 403000005,
         'weight.required' => 403000006,
         'description.max' => 403000007,
-    ]
+    ],
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Console;
 
+use App\Http\Requests\Console\PostRequest;
 use App\Http\Requests\PostEditRequest;
 use App\Services\Console\PostService;
 use App\Transformers\PostTransformer;
@@ -40,14 +41,15 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param PostRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $result = $this->postService->store($request);
+        $resource = new Item($result,new PostTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
@@ -65,15 +67,16 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param PostRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(PostEditRequest $request, $id)
+    public function update(PostRequest $request, $id)
     {
-
+        $this->postService->update($request,$id);
+        $resource = new Item($this->postService->find($id),new PostTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
@@ -85,10 +88,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         $result = $this->postService->delete($id);
-        $this->setData((object)null);
-        if (!$result) {
-            $this->setCode(400000000);
-        }
-        return $this->response();
+        if ($result) return $this->response();
     }
 }
