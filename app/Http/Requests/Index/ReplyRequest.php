@@ -3,20 +3,11 @@
 namespace App\Http\Requests\Index;
 
 use App\Http\Requests\CommonRequest;
+use Illuminate\Http\Request;
 
 class ReplyRequest extends CommonRequest
 {
     public $key = 'reply';
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -25,8 +16,20 @@ class ReplyRequest extends CommonRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        $actionMethod = Request::route()->getActionMethod();
+        $rule = [];
+        if ($actionMethod == 'store') {
+            $rule = [
+                'postId' => 'required|exists:posts,id',
+                'content' => 'required',
+            ];
+        }
+
+        if ($actionMethod == 'update') {
+            $rule = [
+                'content' => 'required',
+            ];
+        }
+        return $rule;
     }
 }

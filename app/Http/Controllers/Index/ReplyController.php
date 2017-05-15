@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Index;
 
+use App\Http\Requests\Index\ReplyRequest;
 use App\Services\Index\ReplyService;
 use App\Transformers\ReplyTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class ReplyController extends Controller
 {
@@ -34,46 +36,27 @@ class ReplyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param ReplyRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function store(ReplyRequest $request)
     {
-        //
+        $result =  $this->replyService->store($request);
+        $resource = new Item($result,new ReplyTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $result = $this->replyService->find($id);
+        $resource = new Item($result,new ReplyTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
@@ -83,19 +66,18 @@ class ReplyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ReplyRequest $request, $id)
     {
-        //
+        $this->replyService->update($request,$id);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $result = $this->replyService->delete($id);
+        if ($result) return $this->response();
     }
 }

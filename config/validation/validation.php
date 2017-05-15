@@ -40,4 +40,9 @@ return [
         'weight.required' => 403000006,
         'description.max' => 403000007,
     ],
+    'reply' => [
+        'postId.required' => 405000000,
+        'postId.exists' => 405000001,
+        'content.required' => 40500002,
+    ]
 ];
