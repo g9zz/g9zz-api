@@ -18,9 +18,9 @@ class ReplyTransformer extends BaseTransformer
     {
         $return = [
             'source' => $replies->source,
-            'post_id' ,
-            'user_id',
-            'is_blocked',
+//            'post_id' ,
+//            'user_id',
+//            'is_blocked',
             'voteCount' => $replies->vote_count,
             'content' => $replies->body,
             'contentOriginal' => $replies->body_original,
@@ -28,18 +28,18 @@ class ReplyTransformer extends BaseTransformer
 
         if ($replies->post_id) {
             $return['post'] = [
-                'id' => $replies->post->id,
-                'title' => $replies->post->title
+                'id' =>  isset($replies->post->id) ? $replies->post->id : null,
+                'title' => isset($replies->post->title) ? $replies->post->title : null,
             ];
         }
 
         if ($replies->user_id) {
             $return['user'] = [
-                'id' => $replies->user->id,
-                'name' => $replies->user->name,
-                'avatar' => $replies->user->avatar
+                'id' => isset($replies->user->id) ? $replies->user->id : null,
+                'name' => isset($replies->user->name) ? $replies->user->name : null,
+                'avatar' => isset($replies->user->avatar) ? $replies->user->avatar : null
             ];
         }
-
+        return $return;
     }
 }

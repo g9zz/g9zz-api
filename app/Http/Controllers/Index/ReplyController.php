@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Index;
 
 use App\Services\Index\ReplyService;
+use App\Transformers\ReplyTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 
 class ReplyController extends Controller
@@ -20,16 +22,15 @@ class ReplyController extends Controller
 
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $paginate = $this->replyService->paginate();
-//        $resource = new Collection($paginate,new R)
-
-
+        $resource = new Collection($paginate,new ReplyTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($paginate));
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

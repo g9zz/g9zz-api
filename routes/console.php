@@ -45,3 +45,11 @@ Route::group(['prefix' => 'tag'],function() {
     Route::put('/{id}','Console\TagController@update')->name('console.tag.put');
     Route::delete('/{id}','Console\TagController@destroy')->name('console.tag.destroy');
 });
+
+Route::group(['prefix' => 'reply'],function() {
+    Route::get('/','Index\ReplyController@index')->name('console.reply.index');
+    Route::post('/','Index\ReplyController@store')->name('console.reply.store');
+    Route::get('/{id}','Index\ReplyController@show')->name('console.reply.show');
+    Route::put('/{id}','Index\ReplyController@update')->name('console.reply.put');
+    Route::delete('/{id}','Index\ReplyController@destroy')->name('console.reply.destroy');
+});
