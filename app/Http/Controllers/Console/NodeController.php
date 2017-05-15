@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Console;
 use App\Http\Requests\Console\NodeRequest;
 use App\Services\Console\NodeService;
 use App\Transformers\NodeTransformer;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 

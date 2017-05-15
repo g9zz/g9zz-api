@@ -51,6 +51,7 @@ abstract class CommonRequest extends FormRequest
     public function failedValidation(Validator $validator)
     {
         if ($validator->fails()) {
+//            dd($validator->errors()->first());
             $code = (int)$validator->errors()->first();
             throw new ValidatorException($code);
         }

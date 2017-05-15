@@ -38,6 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Replies whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Replies whereVoteCount($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Posts $post
+ * @property-read \App\Models\User $user
  */
 class Replies extends Model
 {
@@ -51,4 +53,15 @@ class Replies extends Model
         'body',
         'body_original',
     ];
+
+    public function post()
+    {
+        return $this->hasOne(Posts::class,'id','post_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class,'id','user_id');
+    }
+
 }

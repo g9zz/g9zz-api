@@ -128,7 +128,7 @@ class NodeService
     {
         $update = parse_input($request->only(['parentId','weight','name','slug','description','isShow']));
         if (!$update['is_show']) unset($update['is_show']);
-        $this->log('service.request to '.__METHOD__,['create' => $update]);
+        $this->log('service.request to '.__METHOD__,['update' => $update]);
         $update['level'] = $this->checkLevel($update['parent_id']);
         return $this->nodeRepository->update($update,$id);
     }

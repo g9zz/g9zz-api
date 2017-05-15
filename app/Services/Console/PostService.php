@@ -11,9 +11,12 @@ namespace App\Services\Console;
 
 
 use App\Repositories\Contracts\PostRepositoryInterface;
+use App\Traits\G9zzLog;
+use HyperDown\Parser;
 
 class PostService
 {
+    use G9zzLog;
     protected $postRepository;
 
     public function __construct(PostRepositoryInterface $postRepository)
@@ -102,9 +105,51 @@ class PostService
             ->find($id);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         return $this->postRepository->delete($id);
     }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function store($request)
+    {
+        $create = [
+            'title' => $request->get('title'),
+            'body_original' => $request->get('content')
+        ];
+        if (!empty($request->get('isTop'))) $create['is_top'] = $request->get('isTop')== 'yes' ? 'yes' :'no';
+
+        $create['user_id'] = rand(1,10);//TODO::需要修改
+        $parser = new Parser();
+        $create['content'] = $parser->makeHtml($create['body_original']);
+        $this->log('service.request to '.__METHOD__,['create' => $create]);
+        return $this->postRepository->create($create);
+    }
+
+    /**
+     * @param $request
+     * @param $id
+     * @return mixed
+     */
+    public function update($request,$id)
+    {
+        $update = [
+            'title' => $request->get('title'),
+            'body_original' => $request->get('content')
+        ];
+        $parser = new Parser();
+        $update['content'] = $parser->makeHtml($update['body_original']);
+        if (!empty($request->get('isTop'))) $update['is_top'] = $request->get('isTop')== 'yes' ? 'yes' :'no';
+
+        return $this->postRepository->update($update,$id);
+    }
+
 
 }

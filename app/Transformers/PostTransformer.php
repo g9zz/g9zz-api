@@ -26,13 +26,13 @@ class PostTransformer extends BaseTransformer
             'viewCount' => $posts->view_count,
             'voteCount' => $posts->vote_count,
 //            'last_reply_user_id' => $posts->last_reply_user_id,
-            'order' => $posts->order,
+//            'order' => $posts->order,
             'isTop' => $posts->is_top,
-            'isExcellent' => $posts->is_excellent,
-            'isBlocked' => $posts->is_blocked,
+//            'isExcellent' => $posts->is_excellent,
+//            'isBlocked' => $posts->is_blocked,
             'bodyOriginal' => $posts->body_original,
-            'excerpt' => $posts->excerpt,
-            'isTagged' => $posts->is_tagged,
+//            'excerpt' => $posts->excerpt,
+//            'isTagged' => $posts->is_tagged,
         ];
 
         if ($posts->user_id) {
