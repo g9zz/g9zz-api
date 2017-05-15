@@ -21,7 +21,7 @@ class ReplyTransformer extends BaseTransformer
 //            'post_id' ,
 //            'user_id',
 //            'is_blocked',
-            'voteCount' => $replies->vote_count,
+//            'voteCount' => $replies->vote_count,
             'content' => $replies->body,
             'contentOriginal' => $replies->body_original,
         ];

@@ -60,15 +60,16 @@ class ReplyController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ReplyRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(ReplyRequest $request, $id)
     {
         $this->replyService->update($request,$id);
+        $resource = new Item($this->replyService->find($id),new ReplyTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
