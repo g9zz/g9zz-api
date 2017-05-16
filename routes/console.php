@@ -58,6 +58,6 @@ Route::group(['prefix' => 'append'],function() {
     Route::get('/','Index\AppendController@index')->name('console.append.index');
     Route::post('/','Index\AppendController@store')->name('console.append.store');
     Route::get('/{id}','Index\AppendController@show')->name('console.append.show');
-    Route::put('/{id}','Index\AppendController@update')->name('console.append.put');
-    Route::delete('/{id}','Index\AppendController@destroy')->name('console.append.destroy');
+//    Route::put('/{id}','Index\AppendController@update')->name('console.append.put');
+//    Route::delete('/{id}','Index\AppendController@destroy')->name('console.append.destroy');
 });

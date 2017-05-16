@@ -66,4 +66,14 @@ class AppendService
         $this->log('service.request to '.__METHOD__,['create' => $create]);
         return $this->appendRepository->create($create);
     }
+
+    /**
+     * @param $appendId
+     * @return mixed
+     */
+    public function find($appendId)
+    {
+        return $this->appendRepository->find($appendId);
+    }
+
 }
