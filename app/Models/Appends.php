@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Appends whereTopicId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Appends whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Posts $post
  */
 class Appends extends Model
 {
@@ -37,4 +38,9 @@ class Appends extends Model
         'content_original',
         'topic_id',
     ];
+
+    public function post()
+    {
+        return $this->hasOne(Posts::class,'id','topic_id');
+    }
 }
