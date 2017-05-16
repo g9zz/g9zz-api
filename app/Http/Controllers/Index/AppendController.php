@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Index;
 
+use App\Http\Requests\Index\AppendRequest;
 use App\Services\Index\AppendService;
 use App\Transformers\AppendTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class AppendController extends Controller
 {
@@ -31,24 +33,15 @@ class AppendController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param AppendRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function store(AppendRequest $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $result = $this->appendService->store($request);
+        $resource = new Item($result,new AppendTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

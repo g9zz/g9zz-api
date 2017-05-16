@@ -19,4 +19,14 @@ class AppendRepository extends BaseRepository implements AppendRepositoryInterfa
     {
         return Appends::class;
     }
+
+    /**
+     * 通过帖子ID获取该帖子附言个数
+     * @param $postId
+     * @return mixed
+     */
+    public function getAppendCountByPostId($postId)
+    {
+        return $this->model->where('topic_id',$postId)->count();
+    }
 }

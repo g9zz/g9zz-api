@@ -10,5 +10,8 @@
 return [
     'node' => [
         'max_level' => 3
+    ],
+    'append' => [
+        'max_count' => 1
     ]
 ];

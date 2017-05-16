@@ -44,5 +44,13 @@ return [
         'postId.required' => 405000000,
         'postId.exists' => 405000001,
         'content.required' => 40500002,
+    ],
+    'append' => [
+        'content.required' => 406000000,
+        'content.max' => 406000001,
+        'postId.required' => 406000002,
+        'postId.exists' => 406000003,
+        'isNot.author' => 406000004,
+        'max.count' => 406000005,
     ]
 ];
