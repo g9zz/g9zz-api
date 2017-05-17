@@ -76,4 +76,13 @@ class AppendService
         return $this->appendRepository->find($appendId);
     }
 
+    /**
+     * @param $appendId
+     * @return mixed
+     */
+    public function delete($appendId)
+    {
+        return $this->appendRepository->delete($appendId);
+    }
+
 }

@@ -64,6 +64,7 @@ class AppendController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = $this->appendService->delete($id);
+        if ($result) $this->response();
     }
 }
