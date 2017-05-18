@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Console;
 
+use App\Http\Requests\Console\PermissionRequest;
 use App\Services\Console\PermissionService;
 use App\Transformers\PermissionTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class PermissionController extends Controller
 {
@@ -31,48 +33,40 @@ class PermissionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param PermissionRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
-        //
+        $result = $this->permissionService->store($request);
+        $resource = new Item($result,new PermissionTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $result = $this->permissionService->find($id);
+        $resource = new Item($result,new PermissionTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param PermissionRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id)
+    public function update(PermissionRequest $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $this->permissionService->update($request,$id);
+        $resource = new Item($this->permissionService->find($id),new PermissionTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
     /**

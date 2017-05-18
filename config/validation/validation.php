@@ -52,5 +52,12 @@ return [
         'postId.exists' => 406000003,
         'isNot.author' => 406000004,
         'max.count' => 406000005,
-    ]
+    ],
+    'permission' => [
+        'name.required' => 407000000,
+        'name.unique' => 407000001,
+        'displayName.required' => 407000002,
+        'displayName.unique' => 407000003,
+        'description.max' => 407000004,
+    ],
 ];
