@@ -19,4 +19,12 @@ class PermissionService
     {
         $this->permissionRepository = $permissionRepository;
     }
+
+    /**
+     * @return mixed
+     */
+    public function paginate()
+    {
+        return $this->permissionRepository->paginate(per_page());
+    }
 }

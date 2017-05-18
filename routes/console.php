@@ -61,3 +61,11 @@ Route::group(['prefix' => 'append'],function() {
 //    Route::put('/{id}','Index\AppendController@update')->name('console.append.put');
 //    Route::delete('/{id}','Index\AppendController@destroy')->name('console.append.destroy');
 });
+
+Route::group(['prefix' => 'permission'],function() {
+    Route::get('/','Console\PermissionController@index')->name('console.permission.index');
+    Route::post('/','Console\PermissionController@store')->name('console.permission.store');
+    Route::get('/{id}','Console\PermissionController@show')->name('console.permission.show');
+    Route::put('/{id}','Console\PermissionController@update')->name('console.permission.put');
+    Route::delete('/{id}','Console\PermissionController@destroy')->name('console.permission.destroy');
+});
