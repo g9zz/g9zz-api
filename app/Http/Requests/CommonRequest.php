@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Exceptions\ValidatorException;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -50,7 +49,7 @@ abstract class CommonRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        if ($validator->fails()) {
+        if ($validator->failed()) {
 //            dd($validator->errors()->first());
             $code = (int)$validator->errors()->first();
             throw new ValidatorException($code);

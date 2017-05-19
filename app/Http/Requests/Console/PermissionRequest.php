@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class PermissionRequest extends CommonRequest
 {
     public $key = 'permission';
-
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,4 +35,5 @@ class PermissionRequest extends CommonRequest
         }
         return $rule;
     }
+
 }

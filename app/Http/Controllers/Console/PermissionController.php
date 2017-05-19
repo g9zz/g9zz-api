@@ -80,5 +80,5 @@ class PermissionController extends Controller
         $result = $this->permissionService->delete($id);
         if ($result) $this->response();
     }
-    
+
 }
