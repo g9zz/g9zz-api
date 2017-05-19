@@ -11,7 +11,6 @@ namespace App\Services\Console;
 
 
 use App\Exceptions\TryException;
-use App\Http\Requests\Console\PermissionRequest;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Services\BaseService;

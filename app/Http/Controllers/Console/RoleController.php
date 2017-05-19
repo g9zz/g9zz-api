@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Console;
 use App\Http\Requests\Console\RoleRequest;
 use App\Services\Console\RoleService;
 use App\Transformers\RoleTransformer;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
