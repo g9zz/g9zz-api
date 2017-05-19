@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permissions[] $permission
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $user
  */
 class Roles extends Model
 {
@@ -37,4 +39,21 @@ class Roles extends Model
         'display_name',
         'description',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function user()
+    {
+        return $this->belongsToMany(User::class,'role_user','role_id','user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function permission()
+    {
+        return $this->belongsToMany(Permissions::class,'permission_role','role_id','permission_id');
+    }
+
 }

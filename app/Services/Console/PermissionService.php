@@ -72,7 +72,7 @@ class PermissionService extends BaseService
      */
     public function delete($id)
     {
-        $this->log('service.request to '.__METHOD__,['id' => $id]);
+        $this->log('service.request to '.__METHOD__,['delete_id' => $id]);
 
         try {
             \DB::beginTransaction();

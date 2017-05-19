@@ -69,3 +69,14 @@ Route::group(['prefix' => 'permission'],function() {
     Route::put('/{id}','Console\PermissionController@update')->name('console.permission.put');
     Route::delete('/{id}','Console\PermissionController@destroy')->name('console.permission.destroy');
 });
+
+Route::group(['prefix' => 'role'],function() {
+    Route::get('/','Console\RoleController@index')->name('console.role.index');
+    Route::post('/','Console\RoleController@store')->name('console.role.store');
+    Route::get('/{id}','Console\RoleController@show')->name('console.role.show');
+    Route::put('/{id}','Console\RoleController@update')->name('console.role.put');
+    Route::delete('/{id}','Console\RoleController@destroy')->name('console.role.destroy');
+
+    Route::post('/{roleId}/permission','Console\RoleController@attachPermission')->name('console.role.attach.permission');
+
+});

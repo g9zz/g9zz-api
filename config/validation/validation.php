@@ -60,4 +60,12 @@ return [
         'displayName.unique' => 407000003,
         'description.max' => 407000004,
     ],
+    'role' => [
+        'name.required' => 408000000,
+        'name.unique' => 408000001,
+        'displayName.required' => 408000002,
+        'displayName.unique' => 408000003,
+        'description.max' => 408000004,
+        'permissionIds.required' => 408000005,
+    ],
 ];

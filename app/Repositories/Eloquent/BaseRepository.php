@@ -16,10 +16,11 @@ abstract class BaseRepository extends Repository
 {
     public function find($id, $columns = array('*'))
     {
-         if (empty(parent::find($id, $columns)) ){
+        $result = parent::find($id, $columns);
+         if (empty($result) ){
              throw new DataNullException();
          } else {
-             return parent::find($id,$columns);
+             return $result;
          }
     }
 
