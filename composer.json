@@ -13,6 +13,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "league/fractal": "^0.16.0",
+        "vinkla/hashids": "^3.1",
         "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {

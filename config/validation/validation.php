@@ -68,4 +68,7 @@ return [
         'description.max' => 408000004,
         'permissionIds.required' => 408000005,
     ],
+    'invite_code' => [
+        'max.num' => 409000000,
+    ],
 ];

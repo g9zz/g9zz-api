@@ -13,5 +13,8 @@ return [
     ],
     'append' => [
         'max_count' => 1
+    ],
+    'invite_code' => [
+        'max_num' => 5
     ]
 ];

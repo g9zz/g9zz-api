@@ -10,6 +10,7 @@ namespace App\Providers;
 
 
 use App\Repositories\Contracts\AppendRepositoryInterface;
+use App\Repositories\Contracts\InviteCodeRepositoryInterface;
 use App\Repositories\Contracts\NodeRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\PostRepositoryInterface;
@@ -18,6 +19,7 @@ use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Contracts\TagRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\AppendRepository;
+use App\Repositories\Eloquent\InviteCodeRepository;
 use App\Repositories\Eloquent\NodeRepository;
 use App\Repositories\Eloquent\PermissionRepository;
 use App\Repositories\Eloquent\PostRepository;
@@ -54,5 +56,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppendRepositoryInterface::class,AppendRepository::class);
         $this->app->bind(PermissionRepositoryInterface::class,PermissionRepository::class);
         $this->app->bind(RoleRepositoryInterface::class,RoleRepository::class);
+        $this->app->bind(InviteCodeRepositoryInterface::class,InviteCodeRepository::class);
     }
 }

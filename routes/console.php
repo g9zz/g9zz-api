@@ -81,3 +81,9 @@ Route::group(['prefix' => 'role'],function() {
     Route::post('/{roleId}/permission','Console\RoleController@attachPermission')->name('console.role.attach.permission');
 
 });
+
+Route::group(['prefix' => 'code'],function() {
+    Route::get('/','Console\InviteCodeController@index')->name('console.code.store');
+    Route::get('/allCode','Console\InviteCodeController@getAllCode')->name('console.code.all.code');
+    Route::post('/','Console\InviteCodeController@store')->name('console.code.store');
+});

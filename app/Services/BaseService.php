@@ -11,10 +11,11 @@
 namespace App\Services;
 
 use App\Traits\G9zzLog;
+use App\Traits\Respond;
 
 class BaseService
 {
-    use G9zzLog;
+    use G9zzLog,Respond;
 
     public function __construct(){}
 }
