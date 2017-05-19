@@ -39,9 +39,12 @@ class Permissions extends Model
             'description',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function role()
     {
-        return $this->belongsToMany(Roles::class);
+        return $this->belongsToMany(Roles::class,'permission_role','permission_id','role_id');
     }
 
 }

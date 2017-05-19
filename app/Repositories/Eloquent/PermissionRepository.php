@@ -19,4 +19,14 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
     {
         return  Permissions::class;
     }
+
+    /**
+     * 通过权限ID删除 权限角色 中间表的数据
+     * @param $permissionId
+     * @return mixed
+     */
+    public function deletePermissionRole($permissionId)
+    {
+        return $this->model->role()->where('permission_id',$permissionId)->delete();
+    }
 }

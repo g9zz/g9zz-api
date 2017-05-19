@@ -12,5 +12,10 @@ namespace App\Repositories\Contracts;
 
 interface PermissionRepositoryInterface extends BaseRepositoryInterface
 {
-
+    /**
+     * 通过权限ID删除 权限角色 中间表的数据
+     * @param $permissionId
+     * @return mixed
+     */
+    public function deletePermissionRole($permissionId);
 }

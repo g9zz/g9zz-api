@@ -10,6 +10,7 @@
 namespace App\Services\Console;
 
 
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Services\BaseService;
 
@@ -63,5 +64,26 @@ class PermissionService extends BaseService
         $update = parse_input($update);
         $this->log('service.request to '.__METHOD__,['update' => $update]);
         return $this->permissionRepository->update($update,$id);
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        $this->log('service.request to '.__METHOD__,['id' => $id]);
+
+        try {
+            \DB::beginTransaction();
+            $this->permissionRepository->delete($id);
+            $this->permissionRepository->deletePermissionRole($id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+        return true;
     }
 }

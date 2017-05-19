@@ -77,6 +77,8 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = $this->permissionService->delete($id);
+        if ($result) $this->response();
     }
+    
 }
