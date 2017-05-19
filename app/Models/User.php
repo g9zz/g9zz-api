@@ -95,6 +95,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWechatUnionid($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboLink($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboName($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Roles[] $role
  */
 class User extends Authenticatable
 {
@@ -111,4 +112,12 @@ class User extends Authenticatable
         'weibo_link','verified','verification_token','email_notify_enabled',
         'register_source','last_actived_at',
     ];
+
+    public function role()
+    {
+        return $this->belongsToMany(Roles::class,'role_user','user_id','role_id');
+    }
+
+
+
 }

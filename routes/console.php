@@ -20,6 +20,7 @@ Artisan::command('inspire', function () {
 //Route::resource('user','Console\UserController');
 Route::group(['prefix' => 'user'],function(){
     Route::get('/','Console\UserController@index')->name('console.user.index');
+    Route::post('/{userId}/role/{roleId}','Console\UserController@attachRole')->name('console.user.attach.role');
 });
 
 Route::group(['prefix' => 'post'],function() {
