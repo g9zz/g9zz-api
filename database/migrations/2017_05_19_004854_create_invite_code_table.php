@@ -24,6 +24,7 @@ class CreateInviteCodeTable extends Migration
             $table->index('inviter_id');
             $table->index('invitee_id');
             $table->index('status');
+            $table->index('code');
         });
     }
 

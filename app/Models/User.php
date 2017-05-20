@@ -96,23 +96,102 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboLink($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboName($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Roles[] $role
+ * @property string $hid 加密ID
+ * @property int $wechat_id
+ * @property int $weibo_id
+ * @property int $qq_id
+ * @property int $google_id
+ * @property int $douban_id
+ * @property-read \App\Models\DoubanUser $douban
+ * @property-read \App\Models\GithubUser $github
+ * @property-read \App\Models\GoogleUser $google
+ * @property-read \App\Models\QqUser $qq
+ * @property-read \App\Models\WechatUser $wechat
+ * @property-read \App\Models\WeiboUser $weibo
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereDoubanId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereGoogleId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereHid($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereQqId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWechatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboId($value)
  */
 class User extends Authenticatable
 {
 
     protected $table = 'users';
     protected $fillable = [
-        'password','github_id','github_url','email',
-        'name','login_token','is_banned','image_url',
-        'topic_count','reply_count','follower_count','city',
-        'company','twitter_account','personal_website','introduction',
-        'certification','notification_count','github_name','real_name',
-        'linkedin','payment_qrcode','wechat_qrcode','avatar',
-        'login_qr','wechat_openid','wechat_unionid','weibo_name',
-        'weibo_link','verified','verification_token','email_notify_enabled',
-        'register_source','last_actived_at',
+        'hid',
+        'name',
+        'email',
+        'password',
+        'avatar',
+        'github_id',
+        'wechat_id',
+        'weibo_id',
+        'qq_id',
+        'google_id',
+        'douban_id',
+        'topic_count',
+        'reply_count',
+        'follower_count',
+        'verified',
+        'email_notify_enabled',
+        'register_source',
+        'last_actived_at',
+
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function github()
+    {
+        return $this->hasOne(GithubUser::class,'id','github_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function wechat()
+    {
+        return $this->hasOne(WechatUser::class,'id','wechat_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function weibo()
+    {
+        return $this->hasOne(WeiboUser::class,'id','weibo_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function douban()
+    {
+        return $this->hasOne(DoubanUser::class,'id','douban_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function google()
+    {
+        return $this->hasOne(GoogleUser::class,'id','google_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function qq()
+    {
+        return $this->hasOne(QqUser::class,'id','qq_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function role()
     {
         return $this->belongsToMany(Roles::class,'role_user','user_id','role_id');

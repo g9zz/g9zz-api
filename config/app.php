@@ -173,6 +173,8 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         //login
         Laravel\Socialite\SocialiteServiceProvider::class,
+        //加密id
+        Vinkla\Hashids\HashidsServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -233,6 +235,7 @@ return [
 
         'Entrust' => Zizaco\Entrust\EntrustFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
     ],
 
 ];

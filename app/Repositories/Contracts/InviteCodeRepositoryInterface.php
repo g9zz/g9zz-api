@@ -27,4 +27,11 @@ interface InviteCodeRepositoryInterface extends BaseRepositoryInterface
      * @return mixed
      */
     public function getAllCodeByInviterId($inviterId);
+
+    /**
+     * 通过邀请码获取对应信息
+     * @param $code
+     * @return mixed
+     */
+    public function getInviteCodeByCode($code);
 }

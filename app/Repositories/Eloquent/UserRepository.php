@@ -72,4 +72,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return false;
         }
     }
+
+    /**
+     * 通过github的id获取github_user表
+     * @param $githubId
+     * @return mixed
+     */
+    public function getGithub($githubId)
+    {
+        return $this->model->where('github_id',$githubId)->first();
+    }
 }

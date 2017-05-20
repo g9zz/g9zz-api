@@ -43,4 +43,14 @@ class InviteCodeRepository extends BaseRepository implements InviteCodeRepositor
     {
         return $this->model->where('inviter_id',$inviterId)->get();
     }
+
+    /**
+     * 通过邀请码获取对应信息
+     * @param $code
+     * @return mixed
+     */
+    public function getInviteCodeByCode($code)
+    {
+        return $this->model->where('code',$code)->first();
+    }
 }

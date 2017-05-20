@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\Auth\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Vinkla\Hashids\Facades\Hashids;
 
 class LoginController extends Controller
 {
@@ -28,21 +30,17 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $isInvite;
+    protected $userService;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(UserService $userService)
     {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->isInvite = config('g9zz.invite_code.is_invite');
+        $this->userService = $userService;
     }
 
-    public function login(Request $request)
-    {
-        dd($request->all());
-    }
+
 
     public function redirectToProvider(Request $request,$service)
     {
@@ -75,6 +73,13 @@ class LoginController extends Controller
 
     public function loginByGithub($user)
     {
+        $isGithub = $this->userService->checkIsGithub($user->id);
+        if ($this->isInvite) {
+
+        }
+
+
+
         if(!Users::where('github_id',$user->id)->first()){
 
             $create = [

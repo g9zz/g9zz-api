@@ -15,6 +15,7 @@ return [
         'max_count' => 1
     ],
     'invite_code' => [
-        'max_num' => 5
+        'max_num' => 5,
+        'is_invite' => env('IS_INVITE',false),
     ]
 ];

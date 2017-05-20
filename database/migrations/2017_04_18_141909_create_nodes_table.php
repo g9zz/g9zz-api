@@ -15,6 +15,7 @@ class CreateNodesTable extends Migration
     {
         Schema::create('nodes', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('hid')->unique()->comment('加密ID');
             $table->integer('parent_id')->default(0)->comment('父级 id');
             $table->integer('post_count')->default(0)->comment('帖子数');
             $table->tinyInteger('weight')->default(0)->comment('权重');
@@ -25,6 +26,7 @@ class CreateNodesTable extends Migration
             $table->string('description')->nullable()->comment('描述');
             $table->timestamps();
             $table->softDeletes();
+            $table->index('hid');
         });
     }
 

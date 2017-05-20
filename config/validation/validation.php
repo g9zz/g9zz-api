@@ -71,4 +71,19 @@ return [
     'invite_code' => [
         'max.num' => 409000000,
     ],
+    'register' => [
+        'inviteCode.required' => 410000000,
+        'inviteCode.exists' => 410000001,
+        'password_confirmation.required' => 410000002,
+        'password.confirmed' => 410000003,
+        'need.invite' => 410000004,
+        'name.required' => 410000005,
+        'name.max' => 410000006,
+        'email.required' => 410000007,
+        'email.email' => 410000008,
+        'email.max' => 410000009,
+        'email.unique' => 410000010,
+        'password.required' => 410000011,
+        'password.min' => 410000012,
+    ],
 ];
