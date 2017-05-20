@@ -171,6 +171,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         //RBAC
         Zizaco\Entrust\EntrustServiceProvider::class,
+        //login
+        Laravel\Socialite\SocialiteServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -230,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

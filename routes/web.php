@@ -17,4 +17,8 @@ Route::get('/', function () {
 
 \Illuminate\Support\Facades\Auth::routes();
 
+Route::get('auth/{service}', 'Auth\LoginController@redirectToProvider');
+Route::get('auth/{service}/callback', 'Auth\LoginController@handleProviderCallback');
+
+
 Route::get('/home', 'HomeController@index');
