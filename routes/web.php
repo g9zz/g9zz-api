@@ -32,8 +32,8 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 //\Illuminate\Support\Facades\Auth::routes();
-Route::get('auth/{service}', 'Auth\LoginController@redirectToProvider');
-Route::get('auth/{service}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('auth/{service}', 'Auth\MyLoginController@redirectToProvider');
+Route::get('auth/{service}/callback', 'Auth\MyLoginController@handleProviderCallback');
 
 
 Route::get('/home', 'HomeController@index');

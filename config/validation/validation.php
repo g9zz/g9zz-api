@@ -85,6 +85,7 @@ return [
         'email.unique' => 410000010,
         'password.required' => 410000011,
         'password.min' => 410000012,
+        'needInvite.notSocialite' => 410000013
     ],
     'token' => [
         'token.isNull' => 411000000,

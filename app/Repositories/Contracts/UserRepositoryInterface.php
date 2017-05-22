@@ -33,12 +33,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      */
     public function syncRelationship($role,$id);
 
-    /**
-     * 通过github的id获取github_user表
-     * @param $githubId
-     * @return mixed
-     */
-    public function getGithub($githubId);
 
     /**
      * 根据userId 获取user
@@ -53,4 +47,11 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * @return mixed
      */
     public function findUserByEmail($email);
+
+    /**
+     * 通过githubId 获取user
+     * @param $githubId
+     * @return mixed
+     */
+    public function findUserByGithubId($githubId);
 }

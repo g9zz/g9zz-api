@@ -114,6 +114,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereQqId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWechatId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereWeiboId($value)
+ * @property string $status
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereStatus($value)
  */
 class User extends Authenticatable
 {

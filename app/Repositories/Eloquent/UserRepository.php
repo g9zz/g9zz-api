@@ -73,15 +73,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
     }
 
-    /**
-     * 通过github的id获取github_user表
-     * @param $githubId
-     * @return mixed
-     */
-    public function getGithub($githubId)
-    {
-        return $this->model->where('github_id',$githubId)->first();
-    }
 
     /**
      * 根据userId 获取user
@@ -101,5 +92,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function findUserByEmail($email)
     {
         return $this->model->whereEmail($email)->first();
+    }
+
+    /**
+     * 通过githubId 获取 user
+     * @param $githubId
+     * @return mixed
+     */
+    public function findUserByGithubId($githubId)
+    {
+        return $this->model->whereGithubId($githubId)->first();
     }
 }

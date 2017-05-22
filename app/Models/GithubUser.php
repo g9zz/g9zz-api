@@ -63,14 +63,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\GithubUser whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\GithubUser whereUrl($value)
  * @mixin \Eloquent
+ * @property string $github_name 用户名
+ * @property string $display_name 别名
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\GithubUser whereDisplayName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\GithubUser whereGithubName($value)
  */
 class GithubUser extends Model
 {
     protected $table = 'github_user';
     protected $fillable = [
+        'github_name',
         'github_id',
         'nickname',
-        'name',
+        'display_name',
         'email',
         'avatar',
         'gravatar_id',

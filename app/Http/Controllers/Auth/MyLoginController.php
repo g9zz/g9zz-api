@@ -15,9 +15,7 @@ use App\Http\Requests\Auth\ConsoleLoginRequest;
 use App\Services\Auth\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
-use League\Fractal\Resource\Item;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MyLoginController extends Controller
@@ -49,8 +47,13 @@ class MyLoginController extends Controller
     {
         $email = $request->get('email');
         $user = $this->userService->findUserByEmail($email);
-        $requestPwd = $request->get('password');
+        //防止三方登录,密码为空的情况
+        if (empty($user->password)) {
+            $this->setCode(config('validation.validation.login')['login.error']);
+            return $this->response();
+        }
 
+        $requestPwd = $request->get('password');
         $this->userService->checkPwd($requestPwd,$user->password);
 
         $now = time();
@@ -58,6 +61,10 @@ class MyLoginController extends Controller
         return $this->makeToken($auth);
     }
 
+    /**
+     * @param $auth
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function makeToken($auth)
     {
         $token = Hashids::connection('console_token')->encode($auth);
@@ -68,6 +75,11 @@ class MyLoginController extends Controller
         return $this->response();
     }
 
+    /**
+     * @param Request $request
+     * @param $service
+     * @return mixed
+     */
     public function redirectToProvider(Request $request,$service)
     {
         return Socialite::driver($service)->redirect();
@@ -80,50 +92,43 @@ class MyLoginController extends Controller
         switch ($service)
         {
             case 'github':
-                $this->loginByGithub($user);
+                return $this->loginByGithub($user);
                 break;
             case 'weixin':
-                $this->loginByWeixin($user);
+                return $this->loginByWeixin($user);
                 break;
             case 'weibo':
-                $this->loginByWeibo($user);
+               return $this->loginByWeibo($user);
                 break;
             default:
-                $this->loginByEmail();
+                return $this->loginByEmail();
                 break;
         }
-
-        return redirect()->route('admin.index');
 
     }
 
     public function loginByGithub($user)
     {
         $isGithub = $this->userService->checkIsGithub($user->id);
+        //第一次授权
+        if (empty($isGithub)) {
+            if ($this->isInvite) {
+                $this->setCode(config('validation.validation.register')['needInvite.notSocialite']);
+                return $this->response();
+            }
 
-        if ($this->isInvite) {
-
+            $result = $this->userService->storeGithub($user);
+        } else {
+            $result = $this->userService->findUserByGithubId($isGithub->id);
+            if (empty($result)) {
+                $this->setCode(config('validation.validation.default')['some.error']);
+                return $this->response();
+            }
         }
 
-
-
-        if(!Users::where('github_id',$user->id)->first()){
-
-            $create = [
-                'github_id' => $user->id,
-                'email' => $user->email,
-                'name' => $user->name,
-                'avatar' => $user->avatar,
-                'register_source' => 'github',
-                'company' => $user->user['company'],
-                'city' => $user->user['location'],
-                'github_url' => $user->user['html_url'],
-            ];
-
-            $this->userRepository->create($create);
-        }
-        $userInstance = $this->userRepository->getUserByGithubId($user->id);
-        \Auth::login($userInstance);
+        $now = time();
+        $auth = [$result->id, $now];
+        return $this->makeToken($auth);
 
     }
 

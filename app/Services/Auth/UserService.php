@@ -11,6 +11,7 @@ namespace App\Services\Auth;
 
 
 use App\Exceptions\TryException;
+use App\Repositories\Contracts\GithubUserRepositoryInterface;
 use App\Repositories\Contracts\InviteCodeRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\BaseService;
@@ -23,14 +24,18 @@ class UserService extends BaseService
     protected $hashids;
     protected $isInvite;
     protected $inviteCodeRepository;
+    protected $githubUserRepository;
     public function __construct(UserRepositoryInterface $userRepository,
                                 Hashids $hashids,
-                                InviteCodeRepositoryInterface $inviteCodeRepository)
+                                InviteCodeRepositoryInterface $inviteCodeRepository,
+                                GithubUserRepositoryInterface $githubUserRepository
+                                )
     {
         $this->userRepository = $userRepository;
         $this->hashids = $hashids;
         $this->isInvite = config('g9zz.invite_code.is_invite');
         $this->inviteCodeRepository = $inviteCodeRepository;
+        $this->githubUserRepository = $githubUserRepository;
     }
 
     /**
@@ -134,9 +139,79 @@ class UserService extends BaseService
         }
     }
 
+    /**
+     * @param $githubId
+     * @return mixed
+     */
     public function checkIsGithub($githubId)
     {
-        $github = $this->userRepository->getGithub($githubId);
+        return  $this->githubUserRepository->getGithub($githubId);
+    }
 
+    /**
+     * @param $user
+     * @return mixed
+     */
+    public function storeGithub($user)
+    {
+        $data = $user->user;
+//        dd($data,$user);
+        $create = [
+            'github_name' => $data['login'],
+            'github_id' => $data['id'],
+            'nickname' => $user->nickname,
+            'display_name' => $data['name'],
+            'email' => $data['email'],
+            'avatar' => $data['avatar_url'],
+            'gravatar_id' => $data['gravatar_id'],
+            'url' => $data['url'],
+            'html_url' => $data['html_url'],
+            'type' => $data['type'],
+            'site_admin' => $data['site_admin'],
+            'company' => $data['company'],
+            'blog' => $data['blog'],
+            'location' => $data['location'],
+            'hireable' => $data['hireable'],
+            'bio' => $data['bio'],
+            'public_repos' => $data['public_repos'],
+            'public_gists' => $data['public_gists'],
+            'followers' => $data['followers'],
+            'github_created_at' => $data['created_at'],
+            'github_updated_at' => $data['updated_at'],
+        ];
+        try {
+            \DB::beginTransaction();
+            $this->log('service.request to '.__METHOD__,['github_create' => $create]);
+            $result = $this->githubUserRepository->create($create);
+
+            $userCreate = [
+                'email' => $create['email'],
+                'github_id' => $result->id,
+                'name' => empty($create['display_name']) ? $create['github_name'] : $create['display_name'],
+                'avatar' => $create['avatar'],
+                'register_source' => 'github'
+            ];
+            $this->log('service.request to '.__METHOD__,['user_create' => $userCreate]);
+            $userResult = $this->userRepository->create($userCreate);
+            $update['hid'] = $this->hashids->encode($userResult->id);
+            $this->log('service.request to '.__METHOD__,['user_update' => $update]);
+            $this->userRepository->update($update,$userResult->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+
+        return $userResult;
+    }
+
+    /**
+     * @param $githubId
+     * @return mixed
+     */
+    public function findUserByGithubId($githubId)
+    {
+        return $this->userRepository->findUserByGithubId($githubId);
     }
 }
