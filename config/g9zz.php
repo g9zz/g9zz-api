@@ -17,5 +17,8 @@ return [
     'invite_code' => [
         'max_num' => 5,
         'is_invite' => env('IS_INVITE',false),
+    ],
+    'token' => [
+        'valid_time' => 12 * 60 * 60  //秒数
     ]
 ];

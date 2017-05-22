@@ -86,4 +86,16 @@ return [
         'password.required' => 410000011,
         'password.min' => 410000012,
     ],
+    'token' => [
+        'token.isNull' => 411000000,
+        'token.invalid' => 411000001
+    ],
+    'login' => [
+        'email.required' => 410000007,
+        'email.email' => 410000008,
+        'email.exists' => 412000000,
+        'password.required' => 410000011,
+        'password.string' => 412000001,
+        'login.error' => 412000000,
+    ],
 ];

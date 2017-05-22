@@ -11,10 +11,14 @@ namespace App\Http\Controllers\Auth;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ConsoleLoginRequest;
 use App\Services\Auth\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use League\Fractal\Resource\Item;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MyLoginController extends Controller
 {
@@ -37,7 +41,32 @@ class MyLoginController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * @param ConsoleLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(ConsoleLoginRequest $request)
+    {
+        $email = $request->get('email');
+        $user = $this->userService->findUserByEmail($email);
+        $requestPwd = $request->get('password');
 
+        $this->userService->checkPwd($requestPwd,$user->password);
+
+        $now = time();
+        $auth = [$user->id, $now];
+        return $this->makeToken($auth);
+    }
+
+    public function makeToken($auth)
+    {
+        $token = Hashids::connection('console_token')->encode($auth);
+        $data = new \stdClass();
+        $data->token = $token;
+        $this->setData($data);
+        $this->setCode(200);
+        return $this->response();
+    }
 
     public function redirectToProvider(Request $request,$service)
     {
@@ -71,6 +100,7 @@ class MyLoginController extends Controller
     public function loginByGithub($user)
     {
         $isGithub = $this->userService->checkIsGithub($user->id);
+
         if ($this->isInvite) {
 
         }

@@ -39,4 +39,18 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * @return mixed
      */
     public function getGithub($githubId);
+
+    /**
+     * 根据userId 获取user
+     * @param $userId
+     * @return mixed
+     */
+    public function first($userId);
+
+    /**
+     * 通过邮箱 获取user
+     * @param $email
+     * @return mixed
+     */
+    public function findUserByEmail($email);
 }

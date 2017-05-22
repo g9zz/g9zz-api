@@ -82,4 +82,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return $this->model->where('github_id',$githubId)->first();
     }
+
+    /**
+     * 根据userId 获取user
+     * @param $userId
+     * @return mixed
+     */
+    public function first($userId)
+    {
+        return $this->model->whereId($userId)->first();
+    }
+
+    /**
+     * 通过email 获取user
+     * @param $email
+     * @return mixed
+     */
+    public function findUserByEmail($email)
+    {
+        return $this->model->whereEmail($email)->first();
+    }
 }

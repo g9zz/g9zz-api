@@ -15,11 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Route::group(['middleware' => ['g9zz']],function(){
 
-$this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
-$this->post('login', 'Auth\LoginController@login');
-$this->post('logout', 'Auth\LoginController@logout')->name('logout');
-
+$this->get('login', 'Auth\MyLoginController@showLoginForm')->name('login');
+$this->post('login', 'Auth\MyLoginController@login');
+$this->post('logout', 'Auth\MyLoginController@logout')->name('logout');
+//});
 // Registration Routes...
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 $this->post('register', 'Auth\MyRegisterController@register')->name('register.post');

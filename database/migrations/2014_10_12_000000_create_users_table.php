@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
+            $table->string('status')->default('activited')->nullable();
             $table->integer('github_id')->default(0);
             $table->integer('wechat_id')->default(0);
             $table->integer('weibo_id')->default(0);
@@ -36,6 +37,15 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->index('hid');
+            $table->index('name');
+            $table->index('email');
+            $table->index('status');
+            $table->index('github_id');
+            $table->index('wechat_id');
+            $table->index('weibo_id');
+            $table->index('qq_id');
+            $table->index('google_id');
+            $table->index('douban_id');
 
 
 //            $table->increments('id');

@@ -102,6 +102,37 @@ class UserService extends BaseService
         return $result;
     }
 
+    /**
+     * @param $userId
+     * @return mixed
+     */
+    public function findUserByToken($userId)
+    {
+        return $this->userRepository->first($userId);
+    }
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function findUserByEmail($email)
+    {
+        return $this->userRepository->findUserByEmail($email);
+    }
+
+
+    /**
+     * @param $requestPwd
+     * @param $sqlPwd
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkPwd($requestPwd,$sqlPwd)
+    {
+        if (!password_verify($requestPwd,$sqlPwd)) {
+            $this->setCode(config('validation.validation.login')['login.error']);
+            return $this->response();
+        }
+    }
 
     public function checkIsGithub($githubId)
     {

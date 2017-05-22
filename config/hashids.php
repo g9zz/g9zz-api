@@ -40,9 +40,20 @@ return [
     'connections' => [
 
         'main' => [
-            'salt' => '123456789qwertyuiopasdfghjklzxcvbnm',
+            'salt' => env('HASH_MAIN', 'g9zzMain'),
             'length' => '10',
         ],
+
+        'index_token' => [
+            'salt' => env('LOGIN_SALT','IndexLoginWithG9zz'),
+            'length' => '50'
+        ],
+
+        'console_token' => [
+            'salt' => env('LOGIN_SALT','ConsoleLoginWithG9zz'),
+            'length' => '50'
+        ],
+
 
         'alternative' => [
             'salt' => 'your-salt-string',
