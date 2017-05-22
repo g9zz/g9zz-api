@@ -12,9 +12,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\Auth\UserService;
+use App\Transformers\UserTransformer;
 use Hashids\Hashids;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use League\Fractal\Resource\Item;
 
 
 class MyRegisterController extends Controller
@@ -55,7 +58,10 @@ class MyRegisterController extends Controller
 
     }
 
-
+    /**
+     * @param array $data
+     * @return \Illuminate\Validation\Validator
+     */
     protected function validator(array $data)
     {
         $rule = [
@@ -70,6 +76,10 @@ class MyRegisterController extends Controller
         return $this->requestValidate($data,$rule,'register');
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     protected function create(array $data)
     {
         //需要邀请码
@@ -85,6 +95,24 @@ class MyRegisterController extends Controller
             'password' => bcrypt($data['password']),
         ];
         return  $this->userService->loginCreate($create,$other);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        $resource = new Item($user,new UserTransformer());
+        $this->setData($resource);
+        return $this->response();
     }
 
 }
