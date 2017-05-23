@@ -21,20 +21,20 @@ use Vinkla\Hashids\Facades\Hashids;
 class MyLoginController extends Controller
 {
 
-    use AuthenticatesUsers;
+//    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+//    protected $redirectTo = '/home';
     protected $isInvite;
     protected $userService;
 
     public function __construct(UserService $userService)
     {
-        $this->middleware('guest', ['except' => 'logout']);
+//        $this->middleware('guest', ['except' => 'logout']);
         $this->isInvite = config('g9zz.invite_code.is_invite');
         $this->userService = $userService;
     }
@@ -82,6 +82,11 @@ class MyLoginController extends Controller
      */
     public function redirectToProvider(Request $request,$service)
     {
+        if (!in_array($service,config('g9zz.token.login_way'))) {
+            $this->setCode(config('validation.validation.default')['some.error']);
+            return $this->response();
+        }
+
         return Socialite::driver($service)->redirect();
     }
 

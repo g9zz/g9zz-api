@@ -89,7 +89,7 @@ return [
     ],
     'token' => [
         'token.isNull' => 411000000,
-        'token.invalid' => 411000001
+        'token.invalid' => 411000001,
     ],
     'login' => [
         'email.required' => 410000007,
@@ -98,5 +98,6 @@ return [
         'password.required' => 410000011,
         'password.string' => 412000001,
         'login.error' => 412000000,
+        'loginWay.error' =>  412000002,
     ],
 ];

@@ -19,6 +19,7 @@ return [
         'is_invite' => env('IS_INVITE',false),
     ],
     'token' => [
-        'valid_time' => 12 * 60 * 60  //秒数
+        'valid_time' => 12 * 60 * 60,  //秒数
+        'login_way'  => ['github'],//'weixin','qq','weibo',''
     ]
 ];
