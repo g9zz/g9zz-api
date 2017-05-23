@@ -15,7 +15,7 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hid')->unique()->comment('加密ID');
+            $table->string('hid')->default('')->comment('加密ID');
             $table->string('name')->comment('标签名(英文)');
             $table->string('display_name')->comment('标签名(汉字)');
             $table->string('description')->nullable()->comment('描述');

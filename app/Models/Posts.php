@@ -61,7 +61,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Appends[] $postscript
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Replies[] $reply
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tags[] $tag
- * @property-read \App\Models\Nodes $node
+ * @property string $hid 加密ID
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Posts whereHid($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Nodes[] $node
  */
 class Posts extends Model
 {
@@ -70,6 +72,7 @@ class Posts extends Model
 
     protected $table = 'posts';
     protected $fillable = [
+        'hid',
         'title',
         'content',
         'source',
@@ -96,10 +99,12 @@ class Posts extends Model
     {
         return $this->belongsToMany(Nodes::class,'post_node','post_id','node_id');
     }
+
     public function author()
     {
         return $this->hasOne(User::class,'id','user_id');
     }
+
     public function last_reply_user()
     {
         return $this->hasOne(User::class,'id','last_reply_user_id');

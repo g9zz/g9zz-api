@@ -10,10 +10,13 @@
 namespace App\Services\Console;
 
 
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Services\BaseService;
 use App\Traits\G9zzLog;
+use Vinkla\Hashids\Facades\Hashids;
 
-class TagService
+class TagService extends BaseService
 {
     use G9zzLog;
 
@@ -63,7 +66,19 @@ class TagService
 
         $this->log('service.request to '.__METHOD__,['create' => $create]);
         $create['post_count'] = 0;
-        return $this->tagRepository->create($create);
+        try {
+            \DB::beginTransaction();
+            $result = $this->tagRepository->create($create);
+            $update['hid'] = Hashids::connection('tag')->encode($result->id);
+            $this->tagRepository->update($update,$result->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+
+        return $this->tagRepository->find($result->id);
     }
 
     /**
@@ -72,6 +87,7 @@ class TagService
      */
     public function find($id)
     {
+        $id = parent::changeHidToId($id,'tag');
         return $this->tagRepository->find($id);
     }
 
@@ -82,13 +98,19 @@ class TagService
      */
     public function update($request,$id)
     {
+        $id = parent::changeHidToId($id,'tag');
         $update = parse_input($request->only(['weight','name','displayName','description']));
         $this->log('service.request to '.__METHOD__,['update' => $update]);
         return $this->tagRepository->update($update,$id);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
+        $id = parent::changeHidToId($id,'tag');
         return $this->tagRepository->delete($id);
     }
 }

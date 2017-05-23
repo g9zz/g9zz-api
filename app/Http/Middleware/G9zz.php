@@ -36,7 +36,7 @@ class G9zz
             return $this->handleRes($code);
         }
 
-        $token = Hashids::connection('index_token')->decode($g9zz);
+        $token = Hashids::connection('console_token')->decode($g9zz);
         if (empty($token) || !is_array($token) || count($token) < 2) {
             $code = config('validation.validation.token')['token.invalid'];
             return $this->handleRes($code);

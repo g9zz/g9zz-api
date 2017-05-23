@@ -10,13 +10,13 @@
 namespace App\Services\Console;
 
 
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\NodeRepositoryInterface;
-use App\Traits\G9zzLog;
-use App\Traits\Respond;
+use App\Services\BaseService;
+use Vinkla\Hashids\Facades\Hashids;
 
-class NodeService
+class NodeService extends BaseService
 {
-    use G9zzLog,Respond;
     protected $nodeRepository;
 
     public function __construct(NodeRepositoryInterface $nodeRepository)
@@ -73,15 +73,36 @@ class NodeService
             'parent_id' => $request->get('parentId'),
             'weight' => $request->get('weight'),
             'name' => $request->get('name'),
-            'slug' => $request->get('slug'),
+            'display_name' => $request->get('displayName'),
             'description' => $request->get('description'),
             'is_show' => $request->get('isShow') == 'no' ? 'no' :'yes',
         ];
         $this->log('service.request to '.__METHOD__,['create' => $create]);
-        $create['level'] = $this->checkLevel($create['parent_id']);
+
+        if ($create['parent_id'] === 0 || $create['parent_id'] === "0") {
+            $parentId = $create['parent_id'];
+        } else {
+            $parentId = parent::changeHidToId($create['parent_id'],'node');
+        }
+
+        $create['level'] = $this->checkLevel($parentId);
         $create['post_count'] = 0;
 
-        return $this->nodeRepository->create($create);
+        try {
+            \DB::beginTransaction();
+            $create['parent_id'] = $parentId;
+            $result = $this->nodeRepository->create($create);
+            $update['hid'] = Hashids::connection('node')->encode($result->id);
+            $this->nodeRepository->update($update,$result->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+
+
+        return $this->nodeRepository->find($result->id);
 
     }
 
@@ -111,34 +132,46 @@ class NodeService
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function find($id)
+    public function find($hid)
     {
+        $id = parent::changeHidToId($hid,'node');
         return $this->nodeRepository->find($id);
     }
 
     /**
      * @param $request
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function update($request,$id)
+    public function update($request,$hid)
     {
-        $update = parse_input($request->only(['parentId','weight','name','slug','description','isShow']));
+        $id = parent::changeHidToId($hid,'node');
+        $update = parse_input($request->only(['parentId','weight','name','displayName','description','isShow']));
         if (!$update['is_show']) unset($update['is_show']);
+        $this->log('service.request to '.__METHOD__,['request' => $update]);
+
+        if ($update['parent_id'] === 0 || $update['parent_id'] === "0") {
+            $parentId = $update['parent_id'];
+        } else {
+            $parentId = parent::changeHidToId($update['parent_id'],'node');
+        }
+
+        $update['parent_id'] = $parentId;
+        $update['level'] = $this->checkLevel($parentId);
         $this->log('service.request to '.__METHOD__,['update' => $update]);
-        $update['level'] = $this->checkLevel($update['parent_id']);
         return $this->nodeRepository->update($update,$id);
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete($id)
+    public function delete($hid)
     {
+        $id = parent::changeHidToId($hid,'node');
         $this->nodeRepository->find($id);
         $isHasChild =  $this->nodeRepository->getChildById($id);//return obj | bool
         if (!empty($isHasChild)) {

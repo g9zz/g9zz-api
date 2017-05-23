@@ -15,24 +15,21 @@ use App\Repositories\Contracts\GithubUserRepositoryInterface;
 use App\Repositories\Contracts\InviteCodeRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\BaseService;
-use Hashids\Hashids;
+use Vinkla\Hashids\Facades\Hashids;
 
 class UserService extends BaseService
 {
 
     protected $userRepository;
-    protected $hashids;
     protected $isInvite;
     protected $inviteCodeRepository;
     protected $githubUserRepository;
     public function __construct(UserRepositoryInterface $userRepository,
-                                Hashids $hashids,
                                 InviteCodeRepositoryInterface $inviteCodeRepository,
                                 GithubUserRepositoryInterface $githubUserRepository
                                 )
     {
         $this->userRepository = $userRepository;
-        $this->hashids = $hashids;
         $this->isInvite = config('g9zz.invite_code.is_invite');
         $this->inviteCodeRepository = $inviteCodeRepository;
         $this->githubUserRepository = $githubUserRepository;
@@ -78,7 +75,7 @@ class UserService extends BaseService
         try {
             \DB::beginTransaction();
             $user = $this->userRepository->create($create);
-            $update['hid'] = $this->hashids->encode($user->id);
+            $update['hid'] = Hashids::connection('user')->encode($user->id);
             $this->log('service.request to '.__METHOD__,['user_update' => $update]);
             $this->userRepository->update($update,$user->id);
 
@@ -193,7 +190,7 @@ class UserService extends BaseService
             ];
             $this->log('service.request to '.__METHOD__,['user_create' => $userCreate]);
             $userResult = $this->userRepository->create($userCreate);
-            $update['hid'] = $this->hashids->encode($userResult->id);
+            $update['hid'] = Hashids::connection('user')->encode($userResult->id);
             $this->log('service.request to '.__METHOD__,['user_update' => $update]);
             $this->userRepository->update($update,$userResult->id);
             \DB::commit();

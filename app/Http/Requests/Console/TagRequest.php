@@ -25,19 +25,20 @@ class TagRequest extends CommonRequest
             $rule = [
                 'description' => 'max:120',
                 'weight' => 'required',
-                'name' => 'required|unique:tags,name',
-                'displayName' => 'required|max:60|unique:tags,display_name|regex:/^[a-zA-Z0-9]+$/',
+                'name' => 'required|unique:tags,name|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:tags,display_name',
             ];
         }
 
         if ($actionMethod == 'update') {
-            $id = Request::route()->parameter('id');
+            $hid = Request::route()->parameter('hid');
+            $id = parent::changeHidToId($hid,'tag');
 
             $rule =  [
                 'description' => 'max:120',
                 'weight' => 'required',
-                'name' => 'required|unique:tags,name,!'.$id.',id',
-                'displayName' => 'required|max:60|unique:tags,display_name,!'.$id.',id|regex:/^[a-zA-Z0-9]+$/',
+                'name' => 'required|unique:tags,name,!'.$id.',id|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:tags,display_name,!'.$id.',id',
             ];
         }
 

@@ -29,11 +29,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Appends whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Posts $post
+ * @property string $hid 加密ID
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Appends whereHid($value)
  */
 class Appends extends Model
 {
     protected $table = 'appends';
     protected $fillable = [
+        'hid',
         'content',
         'content_original',
         'topic_id',

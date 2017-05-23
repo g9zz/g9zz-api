@@ -40,18 +40,23 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Nodes whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Nodes whereWeight($value)
  * @mixin \Eloquent
+ * @property string $hid 加密ID
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Nodes whereHid($value)
+ * @property string $display_name 别名
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Nodes whereDisplayName($value)
  */
 class Nodes extends Model
 {
     protected $table = 'nodes';
     protected $fillable = [
+        'hid',
         'parent_id',
         'post_count',
         'weight',
         'level',
         'is_show',
         'name',
-        'slug',
+        'display_name',
         'description',
     ];
 }

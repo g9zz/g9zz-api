@@ -23,7 +23,7 @@ $this->post('logout', 'Auth\MyLoginController@logout')->name('logout');
 //});
 // Registration Routes...
 $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-$this->post('register', 'Auth\MyRegisterController@register')->name('register.post');
+$this->post('register', 'Auth\MyRegisterController@store')->name('register.store');
 
 // Password Reset Routes...
 $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');

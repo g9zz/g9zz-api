@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\DataNullException;
 use App\Exceptions\ValidatorException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Vinkla\Hashids\Facades\Hashids;
 
 abstract class CommonRequest extends FormRequest
 {
@@ -30,6 +32,20 @@ abstract class CommonRequest extends FormRequest
             //
         ];
     }
+
+    /**
+     * 解密hid
+     * @param $hid
+     * @param $connection
+     * @return mixed
+     */
+    public function changeHidToId($hid,$connection)
+    {
+        $result = Hashids::connection($connection)->decode($hid);
+        if (empty($result)) throw new DataNullException();
+        return $result[0];
+    }
+
 
     /**
      * 重写message，验证信息自定义

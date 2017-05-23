@@ -17,14 +17,15 @@ class AppendTransformer extends BaseTransformer
     public function transform(Appends $appends)
     {
         $return = [
-            'id' => $appends->id,
+//            'id' => $appends->id,
+            'hid' => $appends->hid,
             'content' => $appends->content,
             'contentOriginal' => $appends->content_original,
             'createdAt' => rfc_3339($appends->created_at)
         ];
         if ($appends->topic_id) {
             $return['post'] = [
-                'id' => isset($appends->post->id) ? $appends->post->id :null,
+                'hid' => isset($appends->post->hid) ? $appends->post->hid :null,
                 'title' => isset($appends->post->title) ? $appends->post->title :null,
             ];
         }

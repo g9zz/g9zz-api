@@ -23,19 +23,19 @@ class NodeRequest extends CommonRequest
             $rule = [
                 'parentId' => 'required',
                 'weight' => 'required',
-                'name' => 'required|unique:nodes,name',
-                'slug' => 'required|max:60|unique:nodes|regex:/^[a-zA-Z0-9]+$/',
+                'name' => 'required|unique:nodes,name|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:nodes,display_name',
             ];
         }
 
         if ($actionMethod == 'update') {
-            $id = Request::route()->parameter('id');
-
+            $hid = Request::route()->parameter('hid');
+            $id = parent::changeHidToId($hid,'node');
             $rule =  [
                 'parentId' => 'required',
                 'weight' => 'required',
-                'name' => 'required|unique:nodes,name,null,null,id,!'.$id,
-                'slug' => 'required|max:60|unique:nodes,slug,null,null,id,!'.$id.'|regex:/^[a-zA-Z0-9]+$/',
+                'name' => 'required|unique:nodes,name,null,null,id,!'.$id.'|regex:/^[a-zA-Z0-9]+$/',
+                'displayName' => 'required|max:60|unique:nodes,display_name,null,null,id,!'.$id,
             ];
         }
 

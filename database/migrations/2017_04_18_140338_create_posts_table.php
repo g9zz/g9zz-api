@@ -15,7 +15,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hid')->unique()->comment('加密ID');
+            $table->string('hid')->default('')->comment('加密ID');
             $table->string('title')->comment('帖子标题');
             $table->text('content')->comment('帖子内容');
             $table->string('source')->nullable()->comment('来源跟踪：iOS，Android')->index();

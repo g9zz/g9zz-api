@@ -17,7 +17,7 @@ class TagTransformer extends BaseTransformer
     public function transform(Tags $tags)
     {
         $return = [
-            'id' => $tags->id,
+            'hid' => $tags->hid,
             'name' => $tags->name,
             'displayName' => $tags->display_name,
             'description' => $tags->description,

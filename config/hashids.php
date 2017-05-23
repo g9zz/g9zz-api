@@ -54,6 +54,27 @@ return [
             'length' => '50'
         ],
 
+        'post' => [
+            'salt' => env('HASH_POST', 'g9zzPost'),
+            'length' => '10',
+        ],
+
+        'node' => [
+            'salt' => env('HASH_NODE', 'g9zzNode'),
+            'length' => '10',
+        ],
+        'reply' => [
+            'salt' => env('HASH_REPLY', 'g9zzReply'),
+            'length' => '10',
+        ],
+        'tag' => [
+            'salt' => env('HASH_TAG', 'g9zzTag'),
+            'length' => '10',
+        ],
+        'user' => [
+            'salt' => env('HASH_USER', 'g9zzUser'),
+            'length' => '10',
+        ],
 
         'alternative' => [
             'salt' => 'your-salt-string',

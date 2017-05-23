@@ -49,12 +49,12 @@ class TagController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($hid)
     {
-        $result = $this->tagService->find($id);
+        $result = $this->tagService->find($hid);
         $resource = new Item($result,new TagTransformer());
         $this->setData($resource);
         return $this->response();
@@ -62,24 +62,24 @@ class TagController extends Controller
 
     /**
      * @param TagRequest $request
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(TagRequest $request, $id)
+    public function update(TagRequest $request, $hid)
     {
-        $this->tagService->update($request,$id);
-        $resource = new Item($this->tagService->find($id),new TagTransformer());
+        $this->tagService->update($request,$hid);
+        $resource = new Item($this->tagService->find($hid),new TagTransformer());
         $this->setData($resource);
         return $this->response();
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($hid)
     {
-        $result = $this->tagService->delete($id);
+        $result = $this->tagService->delete($hid);
         if ($result) return $this->response();
     }
 }
