@@ -45,12 +45,12 @@ class NodeController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($hid)
     {
-        $node = $this->nodeService->find($id);
+        $node = $this->nodeService->find($hid);
         $resource = new Item($node,new NodeTransformer());
         $this->setData($resource);
         return $this->response();
@@ -58,17 +58,15 @@ class NodeController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return mixed
+     * @param NodeRequest $request
+     * @param $hid
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(NodeRequest $request, $id)
+    public function update(NodeRequest $request, $hid)
     {
-        $this->nodeService->update($request,$id);
+        $this->nodeService->update($request,$hid);
 
-        $resource = new Item($this->nodeService->find($id),new NodeTransformer());
+        $resource = new Item($this->nodeService->find($hid),new NodeTransformer());
         $this->setData($resource);
         return $this->response();
     }
@@ -77,9 +75,9 @@ class NodeController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($hid)
     {
-        $result =  $this->nodeService->delete($id);
+        $result =  $this->nodeService->delete($hid);
         if ($result) return $this->response();
     }
 }
