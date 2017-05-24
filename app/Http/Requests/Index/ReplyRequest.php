@@ -20,7 +20,7 @@ class ReplyRequest extends CommonRequest
         $rule = [];
         if ($actionMethod == 'store') {
             $rule = [
-                'postId' => 'required|exists:posts,id',
+                'postId' => 'required|exists:posts,hid',
                 'content' => 'required',
             ];
         }

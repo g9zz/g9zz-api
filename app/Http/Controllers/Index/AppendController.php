@@ -45,12 +45,12 @@ class AppendController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($hid)
     {
-        $result = $this->appendService->find($id);
+        $result = $this->appendService->find($hid);
         $resource = new Item($result,new AppendTransformer());
         $this->setData($resource);
         return $this->response();

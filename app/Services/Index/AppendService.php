@@ -10,15 +10,15 @@
 namespace App\Services\Index;
 
 
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\AppendRepositoryInterface;
 use App\Repositories\Contracts\PostRepositoryInterface;
-use App\Traits\G9zzLog;
-use App\Traits\Respond;
+use App\Services\BaseService;
 use HyperDown\Parser;
+use Vinkla\Hashids\Facades\Hashids;
 
-class AppendService
+class AppendService extends BaseService
 {
-    use G9zzLog,Respond;
 
     protected $appendRepository;
     protected $postRepository;
@@ -48,13 +48,15 @@ class AppendService
         $parse = new Parser();
         $create['content'] = $parse->makeHtml($content);
 
-        $authId = 1;//TODO::登录者的ID
-        $postId = $request->get('postId');
+        $authId = $request->get('g9zz_user_id');//TODO::登录者的ID
+        $postHid = $request->get('postHid');
+        $postId = parent::changeHidToId($postHid,'post');
         $post = $this->postRepository->find($postId);
         if ($post->user_id != $authId) {
             $this->setCode(config('validation.validation.append')['isNot.author']);
             return $this->response();
         }
+
 
         $appends = $this->appendRepository->getAppendCountByPostId($postId);
         $maxAppends = config('g9zz.append.max_count');
@@ -64,24 +66,41 @@ class AppendService
         }
         $create['topic_id'] = $postId;
         $this->log('service.request to '.__METHOD__,['create' => $create]);
-        return $this->appendRepository->create($create);
+
+        try {
+            \DB::beginTransaction();
+            $result = $this->appendRepository->create($create);
+            $this->log('"service.request" to listener "' . __METHOD__ . '".', ['create' => $create]);
+            $update['hid'] = Hashids::connection('append')->encode($result->id);
+            $this->log('"service.request" to listener "' . __METHOD__ . '".', ['update' => $update]);
+            $this->appendRepository->update($update,$result->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+
+        return $this->appendRepository->find($result->id);
     }
 
     /**
-     * @param $appendId
+     * @param $hid
      * @return mixed
      */
-    public function find($appendId)
+    public function find($hid)
     {
+        $appendId = parent::changeHidToId($hid,'append');
         return $this->appendRepository->find($appendId);
     }
 
     /**
-     * @param $appendId
+     * @param $hid
      * @return mixed
      */
-    public function delete($appendId)
+    public function delete($hid)
     {
+        $appendId = parent::changeHidToId($hid,'append');
         return $this->appendRepository->delete($appendId);
     }
 

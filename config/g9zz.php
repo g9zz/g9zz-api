@@ -12,7 +12,7 @@ return [
         'max_level' => 3
     ],
     'append' => [
-        'max_count' => 1
+        'max_count' => 3
     ],
     'invite_code' => [
         'max_num' => 5,

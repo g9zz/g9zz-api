@@ -75,7 +75,10 @@ return [
             'salt' => env('HASH_USER', 'g9zzUser'),
             'length' => '10',
         ],
-
+        'append' => [
+            'salt' => env('HASH_APPEND', 'g9zzAppend'),
+            'length' => '10',
+        ],
         'alternative' => [
             'salt' => 'your-salt-string',
             'length' => 'your-length-integer',

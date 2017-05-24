@@ -48,8 +48,8 @@ return [
     'append' => [
         'content.required' => 406000000,
         'content.max' => 406000001,
-        'postId.required' => 406000002,
-        'postId.exists' => 406000003,
+        'postHid.required' => 406000002,
+        'postHid.exists' => 406000003,
         'isNot.author' => 406000004,
         'max.count' => 406000005,
     ],

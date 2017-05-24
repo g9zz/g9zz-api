@@ -9,13 +9,14 @@
  */
 namespace App\Services\Index;
 
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\ReplyRepositoryInterface;
-use App\Traits\G9zzLog;
+use App\Services\BaseService;
 use HyperDown\Parser;
+use Vinkla\Hashids\Facades\Hashids;
 
-class ReplyService
+class ReplyService extends BaseService
 {
-    use G9zzLog;
 
     public $replyRepository;
 
@@ -40,8 +41,8 @@ class ReplyService
     {
         $create = [
 //            'source',
-            'post_id' => $request->get('postId'),
-            'user_id' => 2,//TODO::修改为登录者的id
+            'post_id' => parent::changeHidToId($request->get('postId'),'post'),
+            'user_id' => $request->get('g9zz_user_id'),//TODO::修改为登录者的id
 //            'is_blocked',
 //            'vote_count',
 //            'body' ,
@@ -51,26 +52,38 @@ class ReplyService
         $parse = new Parser();
         $body = $parse->makeHtml($create['body_original']);
         $create['body'] = $body;
-
-        return $this->replyRepository->create($create);
+        try {
+            \DB::beginTransaction();
+            $result = $this->replyRepository->create($create);
+            $update['hid'] = Hashids::connection('reply')->encode($result->id);
+            $this->replyRepository->update($update,$result->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+        return $this->replyRepository->find($result->id);
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function find($id)
+    public function find($hid)
     {
+        $id = parent::changeHidToId($hid,'reply');
         return $this->replyRepository->find($id);
     }
 
     /**
      * @param $request
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function update($request,$id)
+    public function update($request,$hid)
     {
+        $id = parent::changeHidToId($hid,'reply');
         $update = [
             'body_original' => $request->get('content'),
         ];
@@ -80,11 +93,12 @@ class ReplyService
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function delete($id)
+    public function delete($hid)
     {
+        $id = parent::changeHidToId($hid,'reply');
         return $this->replyRepository->delete($id);
     }
 }
