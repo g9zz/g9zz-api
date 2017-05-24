@@ -72,7 +72,7 @@ class NodeController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($hid)
