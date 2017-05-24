@@ -16,9 +16,10 @@ class UserTransformer extends BaseTransformer
     public function transform(User $user)
     {
         return [
+            'hid' => $user->hid,
             'name' => $user->name,
-            'mobile' => hide_star($user->mobile),
-            'email' => hide_star($user->email),
+            'mobile' => $user->mobile,
+            'email' => $user->email,
         ];
     }
 }

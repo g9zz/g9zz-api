@@ -34,11 +34,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Tags whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Tags whereWeight($value)
  * @mixin \Eloquent
+ * @property string $hid 加密ID
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Tags whereHid($value)
  */
 class Tags extends Model
 {
     protected $table = 'tags';
     protected $fillable = [
+        'hid',
         'name',
         'display_name',
         'description',

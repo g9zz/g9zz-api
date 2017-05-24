@@ -12,6 +12,14 @@ return [
         'max_level' => 3
     ],
     'append' => [
-        'max_count' => 1
+        'max_count' => 3
+    ],
+    'invite_code' => [
+        'max_num' => 5,
+        'is_invite' => env('IS_INVITE',false),
+    ],
+    'token' => [
+        'valid_time' => 12 * 60 * 60,  //秒数
+        'login_way'  => ['github'],//'weixin','qq','weibo',''
     ]
 ];

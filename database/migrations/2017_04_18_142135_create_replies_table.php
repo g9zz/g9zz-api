@@ -15,6 +15,7 @@ class CreateRepliesTable extends Migration
     {
         Schema::create('replies', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('hid')->default('')->comment('加密ID');
             $table->string('source')->nullable()->index()->comment('来源跟踪：iOS，Android');
             $table->integer('post_id')->unsigned()->default(0)->index()->comment('帖子ID');
             $table->integer('user_id')->unsigned()->default(0)->index()->comment('用户ID');
@@ -24,6 +25,7 @@ class CreateRepliesTable extends Migration
             $table->text('body_original')->nullable()->comment('回复原文');
             $table->softDeletes();
             $table->timestamps();
+            $table->index('hid');
         });
     }
 

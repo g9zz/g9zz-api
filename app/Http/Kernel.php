@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\G9zz;
+use App\Http\Middleware\Ylsc;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -18,6 +20,11 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
+//        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
+//        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
+//        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+
     ];
 
     /**
@@ -32,8 +39,9 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+//            \App\Http\Middleware\VerifyCsrfToken::class,//TODO::最后得加上啊...
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+//            G9zz::class,
         ],
 
         'api' => [
@@ -56,5 +64,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'g9zz' => G9zz::class,
+        'ylsc' => Ylsc::class,
     ];
 }

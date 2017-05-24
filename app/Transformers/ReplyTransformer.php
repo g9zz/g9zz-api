@@ -17,6 +17,7 @@ class ReplyTransformer extends BaseTransformer
     public function transform(Replies $replies)
     {
         $return = [
+            'hid' => $replies->hid,
             'source' => $replies->source,
 //            'post_id' ,
 //            'user_id',
@@ -28,14 +29,14 @@ class ReplyTransformer extends BaseTransformer
 
         if ($replies->post_id) {
             $return['post'] = [
-                'id' =>  isset($replies->post->id) ? $replies->post->id : null,
+                'hid' =>  isset($replies->post->hid) ? $replies->post->hid : null,
                 'title' => isset($replies->post->title) ? $replies->post->title : null,
             ];
         }
 
         if ($replies->user_id) {
             $return['user'] = [
-                'id' => isset($replies->user->id) ? $replies->user->id : null,
+                'hid' => isset($replies->user->hid) ? $replies->user->hid : null,
                 'name' => isset($replies->user->name) ? $replies->user->name : null,
                 'avatar' => isset($replies->user->avatar) ? $replies->user->avatar : null
             ];

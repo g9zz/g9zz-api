@@ -17,7 +17,7 @@ class AppendRequest extends CommonRequest
     {
         $rule = [
             'content' => 'required|max:300',
-            'postId' => 'required|exists:posts,id'
+            'postHid' => 'required|exists:posts,hid'
         ];
         return $rule;
     }

@@ -54,12 +54,12 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $hid
      * @return mixed
      */
-    public function show($id)
+    public function show($hid)
     {
-        $data = $this->postService->find($id);
+        $data = $this->postService->find($hid);
         $resource = new Item($data,new PostTransformer());
         $this->setData($resource);
         return $this->response();
@@ -67,13 +67,13 @@ class PostController extends Controller
 
     /**
      * @param PostRequest $request
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(PostRequest $request, $id)
+    public function update(PostRequest $request, $hid)
     {
-        $this->postService->update($request,$id);
-        $resource = new Item($this->postService->find($id),new PostTransformer());
+        $this->postService->update($request,$hid);
+        $resource = new Item($this->postService->find($hid),new PostTransformer());
         $this->setData($resource);
         return $this->response();
     }
@@ -81,12 +81,12 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $hid
      * @return mixed
      */
-    public function destroy($id)
+    public function destroy($hid)
     {
-        $result = $this->postService->delete($id);
+        $result = $this->postService->delete($hid);
         if ($result) return $this->response();
     }
 }

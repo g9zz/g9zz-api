@@ -40,11 +40,14 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\Models\Posts $post
  * @property-read \App\Models\User $user
+ * @property string $hid 加密ID
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Replies whereHid($value)
  */
 class Replies extends Model
 {
     protected $table = 'replies';
     protected $fillable = [
+        'hid',
         'source',
         'post_id',
         'user_id',

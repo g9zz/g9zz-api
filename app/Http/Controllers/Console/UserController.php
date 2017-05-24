@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Console;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\Console\UserService;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class UserController extends Controller
 {
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
+    protected $userService;
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $page = $this->userRepository->paginate(per_page());
+        $page = $this->userService->paginate();
         $resource = new Collection($page,new UserTransformer());
         $resource->setPaginator(new IlluminatePaginatorAdapter($page));
         $this->setData($resource);
@@ -95,4 +96,13 @@ class UserController extends Controller
     {
         //
     }
+
+    public function attachRole($userId,$roleId)
+    {
+        $this->userService->attachRole($userId,$roleId);
+        $resource = new Item($this->userService->find($userId),new UserTransformer());
+        $this->setData($resource);
+        return $this->response();
+    }
+
 }

@@ -16,4 +16,8 @@
   - Github:https://github.com/SegmentFault/HyperDown
   - package:composer require joyqi/hyper-down dev-master
   
+- Socialite 社会化登录
+  - Github:https://github.com/laravel/socialite
+  - 中文:http://laravelacademy.org/post/1305.html
+  
   

@@ -90,6 +90,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereWechatUnionid($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereWeiboLink($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereWeiboName($value)
+ * @property string $hid 加密ID
+ * @property int $wechat_id
+ * @property int $weibo_id
+ * @property int $qq_id
+ * @property int $google_id
+ * @property int $douban_id
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereDoubanId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereGoogleId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereHid($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereQqId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereWechatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereWeiboId($value)
+ * @property string $status
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereStatus($value)
  */
 class User extends Authenticatable
 {

@@ -11,6 +11,7 @@ namespace App\Traits;
 
 
 use App\Exceptions\CodeException;
+use App\Exceptions\ValidatorException;
 use Dotenv\Exception\ValidationException;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
@@ -112,10 +113,12 @@ trait Respond
         $validation = config('validation.validation');
         $validation = isset($validation[$key]) ? array_merge($validation['default'], $validation[$key]) : $validation['default'];
         $validate = \Validator::make($data, $rules, $validation);
+//        dd($data,$rules,$validation,$key,$validate->fails());
 //        dd($validate->errors()->first());
         if ($validate->fails()) {
             $code = (int)$validate->errors()->first();
-            throw new ValidationException($code);
+            throw new ValidatorException($code);
         }
+        return $validate;
     }
 }

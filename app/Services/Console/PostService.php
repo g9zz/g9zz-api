@@ -10,13 +10,15 @@
 namespace App\Services\Console;
 
 
+use App\Exceptions\DataNullException;
+use App\Exceptions\TryException;
 use App\Repositories\Contracts\PostRepositoryInterface;
-use App\Traits\G9zzLog;
+use App\Services\BaseService;
 use HyperDown\Parser;
+use Vinkla\Hashids\Facades\Hashids;
 
-class PostService
+class PostService extends BaseService
 {
-    use G9zzLog;
     protected $postRepository;
 
     public function __construct(PostRepositoryInterface $postRepository)
@@ -91,26 +93,22 @@ class PostService
     }
 
     /**
-     * 查找帖子
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function find($id)
+    public function find($hid)
     {
-        return $this->postRepository
-            ->with(['tag'])
-            ->with(['node'])
-            ->with(['reply'])
-            ->with(['postscript'])
-            ->find($id);
+        $id = parent::changeHidToId($hid,'post');
+        return $this->postRepository->find($id);
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function delete($id)
+    public function delete($hid)
     {
+        $id = parent::changeHidToId($hid,'post');
         return $this->postRepository->delete($id);
     }
 
@@ -126,20 +124,34 @@ class PostService
         ];
         if (!empty($request->get('isTop'))) $create['is_top'] = $request->get('isTop')== 'yes' ? 'yes' :'no';
 
-        $create['user_id'] = rand(1,10);//TODO::需要修改
+        $create['user_id'] = $request->get('g9zz_user_id');//TODO::需要修改
         $parser = new Parser();
         $create['content'] = $parser->makeHtml($create['body_original']);
         $this->log('service.request to '.__METHOD__,['create' => $create]);
-        return $this->postRepository->create($create);
+        try {
+            \DB::beginTransaction();
+            $result = $this->postRepository->create($create);
+            $update['hid'] = Hashids::connection('post')->encode($result->id);
+            $this->log('service.request to '.__METHOD__,['update' => $update]);
+            $this->postRepository->update($update,$result->id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            $this->log('"service.error" to listener "' . __METHOD__ . '".', ['message' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            \DB::rollBack();
+            throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
+        }
+
+        return $this->postRepository->find($result->id);
     }
 
     /**
      * @param $request
-     * @param $id
+     * @param $hid
      * @return mixed
      */
-    public function update($request,$id)
+    public function update($request,$hid)
     {
+        $id = parent::changeHidToId($hid,'post');
         $update = [
             'title' => $request->get('title'),
             'body_original' => $request->get('content')

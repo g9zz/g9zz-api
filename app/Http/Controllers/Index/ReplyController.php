@@ -48,12 +48,12 @@ class ReplyController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($hid)
     {
-        $result = $this->replyService->find($id);
+        $result = $this->replyService->find($hid);
         $resource = new Item($result,new ReplyTransformer());
         $this->setData($resource);
         return $this->response();
@@ -61,24 +61,24 @@ class ReplyController extends Controller
 
     /**
      * @param ReplyRequest $request
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ReplyRequest $request, $id)
+    public function update(ReplyRequest $request, $hid)
     {
-        $this->replyService->update($request,$id);
-        $resource = new Item($this->replyService->find($id),new ReplyTransformer());
+        $this->replyService->update($request,$hid);
+        $resource = new Item($this->replyService->find($hid),new ReplyTransformer());
         $this->setData($resource);
         return $this->response();
     }
 
     /**
-     * @param $id
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($hid)
     {
-        $result = $this->replyService->delete($id);
+        $result = $this->replyService->delete($hid);
         if ($result) return $this->response();
     }
 }

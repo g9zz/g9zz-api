@@ -17,13 +17,14 @@ class NodeTransformer extends BaseTransformer
     public function transform(Nodes $nodes)
     {
         $return = [
-            'id' => $nodes->id,
+//            'id' => $nodes->id,
+            'hid' => $nodes->hid,
             'postCount' => $nodes->post_count,
             'weight' => $nodes->weight,
             'level' => $nodes->level,
             'is_show' => $nodes->is_show,
             'name' => $nodes->name,
-            'slug' => $nodes->slug,
+            'displayName' => $nodes->display_name,
             'description' => $nodes->description,
         ];
 

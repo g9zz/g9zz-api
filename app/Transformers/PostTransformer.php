@@ -17,7 +17,8 @@ class PostTransformer extends BaseTransformer
     public function transform(Posts $posts)
     {
         $return = [
-            'id' => $posts->id,
+//            'id' => $posts->id,
+            'hid' => $posts->hid,
             'title' => $posts->title,
             'content' => $posts->content,
             'source' => $posts->source,
@@ -33,10 +34,12 @@ class PostTransformer extends BaseTransformer
             'bodyOriginal' => $posts->body_original,
 //            'excerpt' => $posts->excerpt,
 //            'isTagged' => $posts->is_tagged,
+            'createdAt' => rfc_3339($posts->created_at),
         ];
 
         if ($posts->user_id) {
             $return['user'] = [
+                'hid' => $posts->author->hid,
                 'name' => $posts->author->name,
                 'avatar' => $posts->author->avatar,
             ];
@@ -44,6 +47,7 @@ class PostTransformer extends BaseTransformer
 
         if ($posts->last_reply_user_id) {
             $return['lastReplyUser'] = [
+                'hid' => $posts->last_reply_user->hid,
                 'name' => $posts->last_reply_user->name,
                 'avatar' => $posts->last_reply_user->avatar,
             ];
@@ -51,6 +55,7 @@ class PostTransformer extends BaseTransformer
         if ($posts->tag) {
             foreach ($posts->tag as $item) {
                 $return['tag'][] = [
+                    'hid' => $item->hid,
                     'name' => $item->name,
                     'displayName' => $item->display_name,
                     'description' => $item->description,
@@ -63,6 +68,7 @@ class PostTransformer extends BaseTransformer
         if ($posts->node) {
             foreach ($posts->node as $value) {
                 $return['node'][] = [
+                    'hid' => $value->hid,
                     'name' => $value->name,
                     'slug' => $value->slug,
                     'description' => $value->description,
@@ -72,7 +78,7 @@ class PostTransformer extends BaseTransformer
 
         if ($posts->reply) {
             foreach ($posts->reply as $item) {
-                $return['reply'] = [
+                $return['reply'][] = [
                     'source' => $item->source,
                     'isBlocked' => $item->is_blocked,
                     'voteCount' => $item->vote_count,
