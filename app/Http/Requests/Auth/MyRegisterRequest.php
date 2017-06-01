@@ -19,7 +19,7 @@ class MyRegisterRequest extends CommonRequest
         $rule = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
         ];
         if (config('g9zz.invite_code.is_invite')) {
             $rule['inviteCode'] = 'required|exists:invite_code,code,status,created';
