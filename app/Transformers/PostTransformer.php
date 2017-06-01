@@ -34,7 +34,8 @@ class PostTransformer extends BaseTransformer
             'bodyOriginal' => $posts->body_original,
 //            'excerpt' => $posts->excerpt,
 //            'isTagged' => $posts->is_tagged,
-            'createdAt' => rfc_3339($posts->created_at),
+//            'createdAt' => rfc_3339($posts->created_at),
+            'createdAt' => $posts->created_at->diffForHumans(),
         ];
 
         if ($posts->user_id) {
