@@ -70,6 +70,7 @@ class MyLoginController extends Controller
         $token = Hashids::connection('console_token')->encode($auth);
         $data = new \stdClass();
         $data->token = $token;
+        $data->hid = $auth[0];
         $this->setData($data);
         $this->setCode(200);
         return $this->response();
