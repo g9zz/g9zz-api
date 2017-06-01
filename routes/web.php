@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 //Route::group(['middleware' => ['g9zz']],function(){
 
-$this->get('login', 'Auth\MyLoginController@showLoginForm')->name('login');
+//$this->get('login', 'Auth\MyLoginController@showLoginForm')->name('login');
 $this->post('login', 'Auth\MyLoginController@login');
 $this->post('logout', 'Auth\MyLoginController@logout')->name('logout');
 //});

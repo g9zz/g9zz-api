@@ -24,6 +24,7 @@ class HomeController extends Controller
     public function index()
     {
 //        dd(\Auth::check());
+        dd("测试下是否成功了");
         return view('home');
     }
 }
