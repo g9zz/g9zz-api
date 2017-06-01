@@ -58,19 +58,21 @@ class MyLoginController extends Controller
 
         $now = time();
         $auth = [$user->id, $now];
-        return $this->makeToken($auth);
+        $hid = $user->hid;
+        return $this->makeToken($auth,$hid);
     }
 
     /**
      * @param $auth
+     * @param $hid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function makeToken($auth)
+    public function makeToken($auth,$hid)
     {
         $token = Hashids::connection('console_token')->encode($auth);
         $data = new \stdClass();
         $data->token = $token;
-        $data->hid = $auth[0];
+        $data->hid = $hid;
         $this->setData($data);
         $this->setCode(200);
         return $this->response();
