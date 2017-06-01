@@ -37,3 +37,33 @@ Route::get('auth/{service}/callback', 'Auth\MyLoginController@handleProviderCall
 
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'post'],function() {
+    Route::get('/','Console\PostController@index')->name('console.post.index');
+    Route::get('/{hid}','Console\PostController@show')->name('console.post.show');
+});
+
+Route::group(['prefix' => 'node'],function() {
+    Route::get('/','Console\NodeController@index')->name('console.node.index');
+    Route::get('/{hid}','Console\NodeController@show')->name('console.node.show');
+});
+
+Route::group(['prefix' => 'tag'],function() {
+    Route::get('/','Console\TagController@index')->name('console.tag.index');
+    Route::get('/{hid}','Console\TagController@show')->name('console.tag.show');
+});
+
+Route::group(['prefix' => 'reply'],function() {
+    Route::get('/','Index\ReplyController@index')->name('console.reply.index');
+    Route::get('/{hid}','Index\ReplyController@show')->name('console.reply.show');
+});
+
+Route::group(['prefix' => 'append'],function() {
+    Route::get('/','Index\AppendController@index')->name('console.append.index');
+    Route::post('/','Index\AppendController@store')->name('console.append.store');
+    Route::get('/{hid}','Index\AppendController@show')->name('console.append.show');
+//    Route::put('/{id}','Index\AppendController@update')->name('console.append.put');
+//    Route::delete('/{id}','Index\AppendController@destroy')->name('console.append.destroy');
+});
+
+
