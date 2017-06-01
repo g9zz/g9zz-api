@@ -136,7 +136,7 @@ class MyLoginController extends Controller
 
         $now = time();
         $auth = [$result->id, $now];
-        return $this->makeToken($auth);
+        return $this->makeToken($auth,$result->hid);
 
     }
 
