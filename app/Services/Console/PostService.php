@@ -98,8 +98,7 @@ class PostService extends BaseService
      */
     public function find($hid)
     {
-        $id = parent::changeHidToId($hid,'post');
-        return $this->postRepository->find($id);
+        return $this->postRepository->find($hid);
     }
 
     /**
@@ -108,8 +107,7 @@ class PostService extends BaseService
      */
     public function delete($hid)
     {
-        $id = parent::changeHidToId($hid,'post');
-        return $this->postRepository->delete($id);
+        return $this->postRepository->delete($hid);
     }
 
     /**
@@ -141,7 +139,7 @@ class PostService extends BaseService
             throw new TryException(json_encode($e->getMessage()),(int)$e->getCode());
         }
 
-        return $this->postRepository->find($result->id);
+        return $this->postRepository->find($update['hid']);
     }
 
     /**
@@ -151,7 +149,6 @@ class PostService extends BaseService
      */
     public function update($request,$hid)
     {
-        $id = parent::changeHidToId($hid,'post');
         $update = [
             'title' => $request->get('title'),
             'body_original' => $request->get('content')
@@ -160,7 +157,7 @@ class PostService extends BaseService
         $update['content'] = $parser->makeHtml($update['body_original']);
         if (!empty($request->get('isTop'))) $update['is_top'] = $request->get('isTop')== 'yes' ? 'yes' :'no';
 
-        return $this->postRepository->update($update,$id);
+        return $this->postRepository->update($update,$hid);
     }
 
 
